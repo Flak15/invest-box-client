@@ -1,26 +1,53 @@
 import React from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload!.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+export default class AuthForm extends React.Component {
+
+  state = {
+    username: '',
+    pass: ''
+  };
+
+  onChange = (e) => {
+    e.preventDefault();
+    this.setState({[e.target.id]: e.target.value})
+  }
+
+  onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.get('/', {
+          auth: {
+              username: this.state.username,
+              password: this.state.pass
+          },
+          baseURL: 'http://localhost:4000',
+        }
+      );
+      console.log(res.status);
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.setState({username: '', pass: ''});
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.onSubmit}>
+        <div className="form-group">
+          <label htmlFor="exampleInputEmail1">User</label>
+          <input type="text" className="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username" onChange={this.onChange} value={this.state.username}/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="inputPassword1">Password</label>
+          <input type="password" className="form-control" id="pass" placeholder="Password" onChange={this.onChange} value={this.state.pass}/>
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form>
+    )
+  };
+};
