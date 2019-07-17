@@ -39,11 +39,11 @@ export default class AuthForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label htmlFor="exampleInputEmail1">User</label>
+          <label htmlFor="username">User</label>
           <input type="text" className="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username" onChange={this.onChange} value={this.state.username}/>
         </div>
         <div className="form-group">
-          <label htmlFor="inputPassword1">Password</label>
+          <label htmlFor="pass">Password</label>
           <input type="password" className="form-control" id="pass" placeholder="Password" onChange={this.onChange} value={this.state.pass}/>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
