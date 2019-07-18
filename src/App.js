@@ -1,53 +1,50 @@
 import React from 'react';
-import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import AuthForm from './AuthForm';
+import PersonalPage from './PersonalPage';
 
 
-export default class AuthForm extends React.Component {
+function Index() {
+  return <h2>Home</h2>;
+}
 
-  state = {
-    username: '',
-    pass: ''
-  };
+function About() {
+  return <h2>About</h2>;
+}
 
-  onChange = (e) => {
-    e.preventDefault();
-    this.setState({[e.target.id]: e.target.value})
-  }
+function Users() {
+  return <h2>Users</h2>;
+}
 
-  onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.get('/', {
-          auth: {
-              username: this.state.username,
-              password: this.state.pass
-          },
-          baseURL: 'http://localhost:4000',
-        }
-      );
-      console.log(res.status);
-    } catch (e) {
-      console.log(e);
-    }
+function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about/">About</Link>
+            </li>
+            <li>
+              <Link to="/users/">Users</Link>
+            </li>
+            <li>
+              <Link className="btn btn-primary" to="/auth/">Auth</Link>
+            </li>
+          </ul>
+        </nav>
 
-    this.setState({username: '', pass: ''});
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.onSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">User</label>
-          <input type="text" className="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username" onChange={this.onChange} value={this.state.username}/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="pass">Password</label>
-          <input type="password" className="form-control" id="pass" placeholder="Password" onChange={this.onChange} value={this.state.pass}/>
-        </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
-      </form>
-    )
-  };
+        <Route path="/" exact component={Index} />
+        <Route path="/about/" component={About} />
+        <Route path="/users/" component={Users} />
+        <Route path="/auth/" component={AuthForm} />
+      </div>
+    </Router>
+  );
 };
+
+export default App;
