@@ -3,10 +3,12 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import AuthForm from './AuthForm';
 import PersonalPage from './PersonalPage';
+import { getContext } from './storage';
 
+const auth = () => getContext();
 
 const protect = (elementToProtect) => {
-  if (localStorage.length != 0) {
+  if (auth()) {
     return elementToProtect;
   } else {
     return AuthForm;
@@ -18,7 +20,6 @@ function App() {
     <Router>
       <div>
         <Route path="/" exact component={protect(PersonalPage)} />
-        <Route path="/auth/" component={AuthForm} />
       </div>
     </Router>
   );

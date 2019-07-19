@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
-
+import { setContext } from './storage';
 
 export default class AuthForm extends React.Component {
 
   state = {
-    username: '',
+    user: '',
     pass: ''
   };
 
@@ -20,20 +20,21 @@ export default class AuthForm extends React.Component {
     try {
       const res = await axios.get('/', {
           auth: {
-              username: this.state.username,
+              username: this.state.user,
               password: this.state.pass
           },
           baseURL: 'http://localhost:4000',
         }
       );
-      console.log(res.status);
+      setContext(this.state);
+      window.location.reload();
     } catch (e) {
       alert('login error!');
       console.log(e);
     }
-    localStorage.setItem('user', this.state.username);
+    localStorage.setItem('user', this.state.user);
     localStorage.setItem('pass', this.state.pass);
-    this.setState({username: '', pass: ''});
+    this.setState({user: '', pass: ''});
   }
 
   render() {
@@ -43,8 +44,8 @@ export default class AuthForm extends React.Component {
           <div className="col-6">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
-                <label htmlFor="username">User</label>
-                <input type="text" className="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username" onChange={this.onChange} value={this.state.username}/>
+                <label htmlFor="user">User</label>
+                <input type="text" className="form-control" id="user" aria-describedby="emailHelp" placeholder="Enter username" onChange={this.onChange} value={this.state.user}/>
               </div>
               <div className="form-group">
                 <label htmlFor="pass">Password</label>

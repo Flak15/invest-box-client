@@ -1,11 +1,12 @@
 import React from 'react';
+import { removeContext } from './storage';
 
 export default class PersonalPage extends React.Component {
 
   signOut = (e) => {
     e.preventDefault();
-    localStorage.removeItem('user');
-    localStorage.removeItem('pass');
+    removeContext();
+    window.location.href='/';
   }
   render() {
     return (
@@ -19,5 +20,4 @@ export default class PersonalPage extends React.Component {
       </div>
     )
   }
-
 }
