@@ -28,9 +28,11 @@ export default class AuthForm extends React.Component {
       );
       console.log(res.status);
     } catch (e) {
+      alert('login error!');
       console.log(e);
     }
-
+    localStorage.setItem('user', this.state.username);
+    localStorage.setItem('pass', this.state.pass);
     this.setState({username: '', pass: ''});
   }
 
