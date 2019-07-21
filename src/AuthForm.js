@@ -4,7 +4,6 @@ import './App.css';
 import { setContext } from './storage';
 
 export default class AuthForm extends React.Component {
-
   state = {
     user: '',
     pass: ''
@@ -32,8 +31,6 @@ export default class AuthForm extends React.Component {
       alert('login error!');
       console.log(e);
     }
-    localStorage.setItem('user', this.state.user);
-    localStorage.setItem('pass', this.state.pass);
     this.setState({user: '', pass: ''});
   }
 
