@@ -1,5 +1,7 @@
 import React from 'react';
-import { removeContext } from './storage';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
+import { removeContext } from '../storage';
 
 export default class PersonalPage extends React.Component {
 
@@ -13,8 +15,7 @@ export default class PersonalPage extends React.Component {
       <div className="container">
         <div className="row justify-content-md-center">
           <div className="col-6">
-          <p>Hello World!</p>
-          <button type="submit" className="btn btn-primary" onClick={this.signOut}>Sign out</button>
+          <h1>Home</h1>
           </div>
         </div>
       </div>

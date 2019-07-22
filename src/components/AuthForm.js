@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import './App.css';
-import { setContext } from './storage';
+import { setContext } from '../storage';
 
 export default class AuthForm extends React.Component {
   state = {
