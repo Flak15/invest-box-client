@@ -24,7 +24,7 @@ export default class MainPage extends React.Component {
           </div>
           <div className="col-4">
             <Link className="btn btn-primary" to='/settings/'>Настройки</Link>
-            <button type="submit" className="btn btn-primary" onClick={this.signOut}>Sign out</button>
+            <button type="submit" className="btn btn-primary" onClick={this.signOut}>Выход</button>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
 import PersonalPage from './components/PersonalPage';
 import { getContext } from './storage';
-import MainPage from './components/Nav';
+import MainPage from './components/MainPage';
 import News from './components/News';
 import Portfolio from './components/Portfolio';
 import Quotes from './components/Quotes';
@@ -34,13 +34,3 @@ function App() {
 };
 
 export default App;
-
-      // <Router>
-      //   <div>
-      //     <Route
-      //       path="/" exact
-      //       component={}
-      //     />
-      //     <Route path="/news/" component={News} />
-      //   </div>
-      // </Router>
