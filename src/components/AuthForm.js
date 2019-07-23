@@ -24,8 +24,8 @@ export default class AuthForm extends React.Component {
           baseURL: 'http://localhost:4000',
         }
       );
+      this.props.onLogin();
       setContext(this.state);
-      window.location.reload();
     } catch (e) {
       alert('login error!');
       console.log(e);

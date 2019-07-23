@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
 import PersonalPage from './components/PersonalPage';
 import { getContext } from './storage';
-import MainPage from './components/MainPage';
+import Nav from './components/Nav';
 import News from './components/News';
 import Portfolio from './components/Portfolio';
 import Quotes from './components/Quotes';
 import Settings from './components/Settings';
+import Main from './components/Main';
 
 
 const isAuth = () => getContext();
@@ -21,16 +22,36 @@ const protect = (elementToProtect) => {
   }
 };
 
-function App() {
-  return (
-    <Router>
-      <Route path="/" component={protect(MainPage)} />
-      <Route path="/news/" exact component={protect(News)} />
-      <Route path="/portfolio/" exact component={protect(Portfolio)} />
-      <Route path="/quotes/" exact component={protect(Quotes)} />
-      <Route path="/settings/" exact component={protect(Settings)} />
-    </Router>
-  );
-};
+export default class App extends React.Component {
+  state = { auth: 'out' }
 
-export default App;
+  login = () => {
+    this.setState({auth: 'login'});
+  }
+
+  logout = () => {
+    this.setState({auth: 'logout'});
+  }
+
+  componentDidMount() {
+    this.setState({auth: getContext() ? 'login' : 'logout'})
+  }
+
+  render() {
+    if (this.state.auth === 'login') {
+      return (
+        <Router>
+          <Nav logout={this.logout} />
+          <Route path="/" exact component={Main} />
+          <Route path="/news/" component={(News)} />
+          <Route path="/portfolio/" component={(Portfolio)} />
+          <Route path="/quotes/" component={(Quotes)} />
+          <Route path="/settings/" render={props => <Settings {...props} change={this.testChangeState} />} />
+        </Router>
+      );
+    } else {
+      return <AuthForm onLogin={this.login}/>;
+    }
+
+  }
+}

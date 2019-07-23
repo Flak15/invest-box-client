@@ -8,6 +8,7 @@ export default class MainPage extends React.Component {
   signOut = (e) => {
     e.preventDefault();
     removeContext();
+    this.props.logout();
     window.location.href='/';
   }
   render() {
