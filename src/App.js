@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
-import PersonalPage from './components/PersonalPage';
 import { getContext } from './storage';
 import Nav from './components/Nav';
 import News from './components/News';
@@ -11,16 +10,6 @@ import Quotes from './components/Quotes';
 import Settings from './components/Settings';
 import Main from './components/Main';
 
-
-const isAuth = () => getContext();
-
-const protect = (elementToProtect) => {
-  if (isAuth()) {
-    return elementToProtect;
-  } else {
-    return AuthForm;
-  }
-};
 
 export default class App extends React.Component {
   state = { auth: 'out' }
@@ -52,6 +41,5 @@ export default class App extends React.Component {
     } else {
       return <AuthForm onLogin={this.login}/>;
     }
-
   }
 }
