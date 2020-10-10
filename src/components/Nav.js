@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { removeContext } from '../storage';
 
-export default class MainPage extends React.Component {
+export default class Nav extends React.Component {
 
   signOut = (e) => {
     e.preventDefault();
     removeContext();
     this.props.logout();
-    window.history.push('/');
+    window.history.pushState(null, null, '/');
   }
   render() {
     return (
