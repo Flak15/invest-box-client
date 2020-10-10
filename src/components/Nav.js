@@ -9,7 +9,7 @@ export default class MainPage extends React.Component {
     e.preventDefault();
     removeContext();
     this.props.logout();
-    window.location.href='/';
+    window.history.push('/');
   }
   render() {
     return (
