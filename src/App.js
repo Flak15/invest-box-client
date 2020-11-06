@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
 import { getContext } from './storage';
-import Nav from './components/Nav';
+import NavBar from './components/NavBar';
 import News from './components/News';
 import Portfolio from './components/Portfolio';
 import Quotes from './components/Quotes';
@@ -30,12 +30,12 @@ export default class App extends React.Component {
     if (this.state.auth === 'login') {
       return (
         <Router>
-          <Nav logout={this.logout} />
-          <Route path="/" exact component={Main} />
-          <Route path="/news/" component={(News)} />
-          <Route path="/portfolio/" component={(Portfolio)} />
-          <Route path="/quotes/" component={(Quotes)} />
-          <Route path="/settings/" render={props => <Settings {...props} change={this.testChangeState} />} />
+          <NavBar logout={this.logout} />
+            <Route path="/" exact component={Main} />
+            <Route path="/news/" component={(News)} />
+            <Route path="/portfolio/" component={(Portfolio)} />
+            <Route path="/quotes/" component={(Quotes)} />
+            <Route path="/settings/" render={props => <Settings {...props} change={this.testChangeState} />} />
         </Router>
       );
     } else {
