@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
 import { getContext } from './storage';
 import NavBar from './components/NavBar';
