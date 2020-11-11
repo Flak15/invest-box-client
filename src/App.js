@@ -12,7 +12,7 @@ import Main from './components/Main';
 
 
 export default class App extends React.Component {
-  state = { auth: 'out' }
+  state = { auth: 'logout' }
 
   login = () => {
     this.setState({auth: 'login'});
