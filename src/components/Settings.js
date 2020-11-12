@@ -3,19 +3,25 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 
+const handleChange = () => {
+
+}
+
+const handleRemove = async () => {
+  // curl -X POST -H "Content-Type: application/json" --user user11:111 --data '{"username": "user2", "symbol":"AAPL"}' localhost:4000/portfolio/remove
+}
+
 const Instrument = (props) => {
   const { instrument } = props;
   return (
-
     <li className="list-group-item">
       <div className="row">
       <div className="col-7"><b>{instrument.symbol}</b></div>
       <div className="col-1"><b>{instrument.value}</b></div>
-      <div className="col-2"><button type="button" className="btn btn-sm btn-light">Изменить</button></div>
-      <div className="col-2"><button type="button" className="btn btn-sm btn-light">Удалить</button></div>
+      <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleChange}>Изменить</button></div>
+      <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleRemove}>Удалить</button></div>
       </div>
     </li>
-
   )
 }
 

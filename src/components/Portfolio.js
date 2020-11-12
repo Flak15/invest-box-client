@@ -52,7 +52,7 @@ export default class Portfolio extends React.Component {
                 })}
               </tbody>
             </table>
-            <h3>Стоимость портфеля: {this.state.portfolio.reduce((total, inst) => total + inst.totalValue, 0)}</h3>
+            <h3>Стоимость портфеля: {this.state.portfolio.reduce((total, inst) => total + inst.totalValue, 0).toFixed(2)}</h3>
           </div>
         </div>
       </div>
