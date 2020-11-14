@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
@@ -22,68 +22,75 @@ const InstrumentForm = (props) => {
   </Form>);
 }
 
-export default class Instrument extends React.Component{
-  constructor (props) {
-    super(props);
-    const { instrument } = this.props;
-    this.state = {
-      isEditable: false,
-      symbol: instrument.symbol,
-      value: instrument.value,
-      instrumentId: instrument._id,
+const Instrument = (props) => {
+  const [edit, setEdit] = useState(false);
+  const { setPortfolio, instrument } = props;
+
+  const handleInput = (e) => {
+    setPortfolio(prevPortfolio => prevPortfolio.map(inst => {
+      if (inst._id === instrument._id) {
+         return { ...inst, value: e.target.value };
+      }
+      return inst;
+    }));
+  }
+  const handleSubmit = async () => {
+    setEdit(false);
+    try {
+      await axios.post(`/portfolio/update`,
+      {
+        username: getContext().username,
+        symbol: instrument.symbol,
+        value: instrument.value
+      },
+      {
+        auth: getContext(),
+        baseURL: config.baseURL,
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
-  handleInput = (e) => {
-    this.setState({ value: e.target.value });
+  const handleToggle = () => {
+    setEdit(true);
   }
-  handleSubmit = async () => {
-    this.setState({ isEditable: false });
-    await axios.post(`/portfolio/update`,
-    {
-      username: getContext().username,
-      symbol: this.state.symbol,
-      value: this.state.value
-    },
-    {
-      auth: getContext(),
-      baseURL: config.baseURL,
-    });
+  const handleRemove = async () => {
+    try {
+      await axios.post(`/portfolio/remove`,
+      {
+        username: getContext().username,
+        symbol: instrument.symbol,
+      },
+      {
+        auth: getContext(),
+        baseURL: config.baseURL,
+      });
+      setPortfolio(prevPortfolio => prevPortfolio.filter(inst => inst._id !== instrument._id));
+    } catch (e) {
+      console.log(e);
+    }
   }
-  handleToggle = () => {
-    this.setState({ isEditable: true });
-  }
-  handleRemove = async () => { // curl -X POST -H "Content-Type: application/json" --user user11:111 --data '{"username": "user2", "symbol":"AAPL"}' localhost:4000/portfolio/remove
-    await axios.post(`/portfolio/remove`,
-    {
-      username: getContext().username,
-      symbol: this.state.symbol,
-    },
-    {
-      auth: getContext(),
-      baseURL: config.baseURL,
-    });
 
-  }
-  render() {
-    return (
-      <li className="list-group-item">
-        <div className="row">
-        <div className="col-7"><b>{this.state.symbol}</b></div>
-        {this.state.isEditable ?
-          <div className="col-3">
-            <InstrumentForm 
-              handleSubmit={this.handleSubmit} 
-              value={this.state.value} 
-              handleInput={this.handleInput}
-            />
-          </div> :
-          <>
-            <div className="col-1"><b>{this.state.value}</b></div>
-            <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={this.handleToggle}>Изменить</button></div>
-          </>}
-        <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={this.handleRemove}>Удалить</button></div>
-        </div>
-      </li>
-    )
-  }
-} 
+  return (
+    <li className="list-group-item">
+      <div className="row">
+      <div className="col-7"><b>{instrument.shortName}</b></div>
+      {edit ?
+        <div className="col-3">
+          <InstrumentForm 
+            handleSubmit={handleSubmit} 
+            value={instrument.value} 
+            handleInput={handleInput}
+          />
+        </div> :
+        <>
+          <div className="col-1"><b>{props.instrument.value}</b></div>
+          <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleToggle}>Изменить</button></div>
+        </>}
+      <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleRemove}>Удалить</button></div>
+      </div>
+    </li>
+  )
+}
+
+export default Instrument;
