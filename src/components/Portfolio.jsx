@@ -5,19 +5,13 @@ import { getContext } from '../storage';
 
 export default class Portfolio extends React.Component {
   state = {
-    user: '',
-    pass: '',
     portfolio: []
   }
 
   async componentDidMount() {
     // Simple GET request using fetch
-    await this.setState({ ...getContext() });
-    const res = await axios.get(`/portfolio/${this.state.user}`, {
-      auth: {
-          username: this.state.user,
-          password: this.state.pass
-      },
+    const res = await axios.get(`/portfolio/${getContext().username}`, {
+      auth: getContext(),
       baseURL: config.baseURL
     });
     const portfolio = JSON.parse(res.data.p);
@@ -34,6 +28,7 @@ export default class Portfolio extends React.Component {
               <thead>
                 <tr>
                   <th scope="col">Symbol</th>
+                  <th scope="col">Name</th>
                   <th scope="col">Value</th>
                   <th scope="col">Price</th>
                   <th scope="col">Total value</th>
@@ -44,6 +39,7 @@ export default class Portfolio extends React.Component {
                   return (
                     <tr key={instrument._id}>
                       <td>{instrument.symbol}</td>
+                      <td>{instrument.shortName}</td>
                       <td>{instrument.value}</td>
                       <td>{instrument.totalValue / instrument.value}</td>
                       <td>{instrument.totalValue}</td>

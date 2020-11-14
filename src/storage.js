@@ -5,9 +5,9 @@ export const setContext = ({ user, pass }) => {
 
 export const getContext = () => {
   if (localStorage.getItem('user')) {
-    return { user: localStorage.getItem('user'), pass: localStorage.getItem('pass') };
+    return { username: localStorage.getItem('user'), password: localStorage.getItem('pass') };
   }
-  return undefined;
+  return null;
 };
 
 export const removeContext = () => {
