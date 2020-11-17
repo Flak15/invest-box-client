@@ -9,7 +9,7 @@ const Portfolio = () => {
   useEffect(() => {
     const getP = async () => {
       const res = await axios.get(`/portfolio/${getContext().username}`, {
-        auth: getContext(),
+        auth: getContext() || undefined,
         baseURL: config.baseURL
       });
       setPortfolio(JSON.parse(res.data.p));

@@ -27,10 +27,11 @@ const App = () => {
       <Router>
         <NavBar logout={logout} />
           <Route path="/" exact component={Main} />
-          <Route path="/news/" component={(News)} />
-          <Route path="/portfolio/" component={(Portfolio)} />
-          <Route path="/quotes/" component={(Quotes)} />
-          <Route path="/settings/" render={props => <Settings {...props} />} />
+          <Route path="/news/" component={News} />
+          <Route path="/portfolio/" component={Portfolio} />
+          <Route path="/quotes/" component={Quotes} />
+          <Route path="/settings/" component={Settings} />
+          {/* render={props => <Settings {...props}/> для чего это*/} 
       </Router>
     );
   } else {
