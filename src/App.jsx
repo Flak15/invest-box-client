@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
@@ -10,36 +10,32 @@ import Quotes from './components/Quotes';
 import Settings from './components/Settings';
 import Main from './components/Main';
 
-
-export default class App extends React.Component {
-  state = { auth: 'logout' }
-
-  login = () => {
-    this.setState({auth: 'login'});
+const App = () => {
+  const [auth, setAuth] = useState('logout');
+  const login = () => {
+    setAuth('login');
   }
-
-  logout = () => {
-    this.setState({auth: 'logout'});
+  const logout = () => {
+    setAuth('logout');
   }
+  useEffect(() => {
+    setAuth(getContext() ? 'login' : 'logout'); 
+  }, []); // че с зависимостями?
 
-  componentDidMount() {
-    this.setState({auth: getContext() ? 'login' : 'logout'})
-  }
-
-  render() {
-    if (this.state.auth === 'login') {
-      return (
-        <Router>
-          <NavBar logout={this.logout} />
-            <Route path="/" exact component={Main} />
-            <Route path="/news/" component={(News)} />
-            <Route path="/portfolio/" component={(Portfolio)} />
-            <Route path="/quotes/" component={(Quotes)} />
-            <Route path="/settings/" render={props => <Settings {...props} change={this.testChangeState} />} />
-        </Router>
-      );
-    } else {
-      return <AuthForm onLogin={this.login}/>;
-    }
+  if (auth === 'login') {
+    return (
+      <Router>
+        <NavBar logout={logout} />
+          <Route path="/" exact component={Main} />
+          <Route path="/news/" component={(News)} />
+          <Route path="/portfolio/" component={(Portfolio)} />
+          <Route path="/quotes/" component={(Quotes)} />
+          <Route path="/settings/" render={props => <Settings {...props} />} />
+      </Router>
+    );
+  } else {
+    return <AuthForm onLogin={login}/>;
   }
 }
+
+export default App;

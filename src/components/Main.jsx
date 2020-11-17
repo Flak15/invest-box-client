@@ -1,6 +1,6 @@
 import React from 'react';
 
- const Main = () => {
+const Main = () => {
   return (
     <div className="container">
       <div className="row justify-content-md-center">
