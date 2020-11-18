@@ -20,7 +20,7 @@ const App = () => {
   }
   useEffect(() => {
     setAuth(getContext() ? 'login' : 'logout'); 
-  }, []); // че с зависимостями?
+  }, []);
 
   if (auth === 'login') {
     return (

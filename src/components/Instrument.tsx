@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { Form, Button, Col } from 'react-bootstrap';
+import { Iauth, IportfolioItem } from '../types/index';
 
-const InstrumentForm = (props) => {
+const InstrumentForm = (props: any) => {
   const { handleSubmit, value, handleInput } = props;
   return (<Form onSubmit={handleSubmit}>
     <Form.Row>
@@ -22,12 +23,12 @@ const InstrumentForm = (props) => {
   </Form>);
 }
 
-const Instrument = (props) => {
+const Instrument = (props: any) => {
   const [edit, setEdit] = useState(false);
   const { setPortfolio, instrument } = props;
 
-  const handleInput = (e) => {
-    setPortfolio(prevPortfolio => prevPortfolio.map(inst => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.map(inst => {
       if (inst._id === instrument._id) {
          return { ...inst, value: e.target.value };
       }
@@ -37,16 +38,22 @@ const Instrument = (props) => {
   const handleSubmit = async () => {
     setEdit(false);
     try {
-      await axios.post(`/portfolio/update`,
-      {
-        username: getContext().username,
-        symbol: instrument.symbol,
-        value: instrument.value
-      },
-      {
-        auth: getContext(),
-        baseURL: config.baseURL,
-      });
+      const authData: Iauth | null = getContext();
+      if (authData) {
+        await axios.post(`/portfolio/update`,
+        {
+          username: authData.username,
+          symbol: instrument.symbol,
+          value: instrument.value
+        },
+        {
+          auth: authData,
+          baseURL: config.baseURL,
+        });
+      } else {
+        console.log('User undefined!')
+      }
+      
     } catch (e) {
       console.log(e);
     }
@@ -56,16 +63,21 @@ const Instrument = (props) => {
   }
   const handleRemove = async () => {
     try {
-      await axios.post(`/portfolio/remove`,
-      {
-        username: getContext().username,
-        symbol: instrument.symbol,
-      },
-      {
-        auth: getContext(),
-        baseURL: config.baseURL,
-      });
-      setPortfolio(prevPortfolio => prevPortfolio.filter(inst => inst._id !== instrument._id));
+      const authData: Iauth | null = getContext();
+      if (authData) {
+        await axios.post(`/portfolio/remove`,
+        {
+          username: authData.username,
+          symbol: instrument.symbol,
+        },
+        {
+          auth: authData,
+          baseURL: config.baseURL,
+        });
+      } else {
+        console.log('User undefined!')
+      }
+      setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.filter(inst => inst._id !== instrument._id));
     } catch (e) {
       console.log(e);
     }

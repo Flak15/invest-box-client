@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form } from 'react-bootstrap';
-
+import { Iauth, IportfolioItem } from '../types/index';
 const Settings = () => {
   const [portfolio, setPortfolio] = useState([]);
   const [isShowModal, setIsShowModal] = useState(false);
@@ -17,31 +17,41 @@ const Settings = () => {
     setIsShowModal(false);
   }
   const addInstrument =  async () => {
-      await axios.post(`/portfolio/add`,
-      {
-        username: getContext().username,
-        symbol: modalInput.symbol,
-        value: modalInput.value,
-      },
-      {
-        auth: getContext(),
-        baseURL: config.baseURL,
-      });
+      const authData: Iauth | null = getContext();
+      if (authData) {
+        await axios.post(`/portfolio/add`,
+        {
+          username: authData.username,
+          symbol: modalInput.symbol,
+          value: modalInput.value,
+        },
+        {
+          auth: authData,
+          baseURL: config.baseURL,
+        });
+      } else {
+        console.log('User undefined!');
+      }
       setIsShowModal(false);
     }
   
   
-  const handleInput = (e) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setModalInput( {...modalInput, [e.target.name]: e.target.value });
   }
 
   useEffect(() => {
     const getP = async () => {
-      const res = await axios.get(`/portfolio/${getContext().username}`, {
-        auth: getContext(),
-        baseURL: config.baseURL
-      });
-      setPortfolio(JSON.parse(res.data.p));
+      const authData: Iauth | null = getContext();
+      if (authData) {
+        const res = await axios.get(`/portfolio/${authData.username}`, {
+          auth: authData,
+          baseURL: config.baseURL
+        });
+        setPortfolio(JSON.parse(res.data.p));
+      } else {
+        console.log('User undefined!');
+      }
     }
     getP();
   }, []);
@@ -53,7 +63,7 @@ const Settings = () => {
         </div>
         <div className="row justify-content-md-center">
         <ul className="list-group col-8">
-            {portfolio.map(instrument => (<Instrument key={instrument._id} instrument={instrument} setPortfolio={setPortfolio} />))}
+            {portfolio.map((instrument: IportfolioItem) => (<Instrument key={instrument._id} instrument={instrument} setPortfolio={setPortfolio} />))}
         </ul>
         </div>
         <div className="row justify-content-md-center mt-4">

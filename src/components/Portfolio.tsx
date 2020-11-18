@@ -3,18 +3,24 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { useState, useEffect } from 'react';
-
+import { Iauth, IportfolioItem } from '../types/index';
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState([]);
+
   useEffect(() => {
     const getP = async () => {
-      const res = await axios.get(`/portfolio/${getContext().username}`, {
-        auth: getContext() || undefined,
-        baseURL: config.baseURL
-      });
-      setPortfolio(JSON.parse(res.data.p));
+      const authData: Iauth | null = getContext();
+      if (authData) {
+        const res = await axios.get(`/portfolio/${authData.username}`, {
+          auth: authData,
+          baseURL: config.baseURL
+        });
+        setPortfolio(JSON.parse(res.data.p));
+      } else {
+        console.log('User undefined!')
+      }
     }
-    getP();
+      getP();
   }, []); // как правильно определять зависимости?
 
   return (
@@ -33,7 +39,7 @@ const Portfolio = () => {
               </tr>
             </thead>
             <tbody>
-              {portfolio.map(instrument => {
+              {portfolio.map((instrument: IportfolioItem) => {
                 return (
                   <tr key={instrument._id}>
                     <td>{instrument.symbol}</td>
@@ -46,7 +52,7 @@ const Portfolio = () => {
               })}
             </tbody>
           </table>
-          <h3>Стоимость портфеля: {portfolio.reduce((total, inst) => total + inst.totalValue, 0).toFixed(2)}</h3>
+          <h3>Стоимость портфеля: {portfolio.reduce((total: number, inst: IportfolioItem) => total + inst.totalValue, 0).toFixed(2)}</h3>
         </div>
       </div>
     </div>
