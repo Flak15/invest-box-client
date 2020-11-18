@@ -29,6 +29,11 @@ const Settings = () => {
           auth: authData,
           baseURL: config.baseURL,
         });
+        const res = await axios.get(`/portfolio/${authData.username}`, {
+          auth: authData,
+          baseURL: config.baseURL
+        });
+        setPortfolio(JSON.parse(res.data.p));
       } else {
         console.log('User undefined!');
       }

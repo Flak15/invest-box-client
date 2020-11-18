@@ -8,11 +8,12 @@ const AuthForm = (props: any) => {
   const [formInputs, setFormInputs] = useState({ username: '', password: '' });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.name)
+    
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
   }
   const onSubmit = async () => {
     try {
+      console.log(formInputs);
       await axios.get('/', {
           auth: formInputs,
           baseURL: config.baseURL,

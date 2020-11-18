@@ -39,6 +39,7 @@ const Instrument = (props: any) => {
     setEdit(false);
     try {
       const authData: Iauth | null = getContext();
+      console.log('1');
       if (authData) {
         await axios.post(`/portfolio/update`,
         {
@@ -53,7 +54,6 @@ const Instrument = (props: any) => {
       } else {
         console.log('User undefined!')
       }
-      
     } catch (e) {
       console.log(e);
     }
