@@ -9,7 +9,7 @@ import Portfolio from './components/Portfolio';
 import Quotes from './components/Quotes';
 import Settings from './components/Settings';
 import Main from './components/Main';
-
+import Registration from './components/Registration';
 const App = () => {
   const [auth, setAuth] = useState('logout');
   const login = () => {
@@ -35,7 +35,13 @@ const App = () => {
       </Router>
     );
   } else {
-    return <AuthForm onLogin={login}/>;
+    return (
+      <Router>
+        <Route path="/" exact render={props => <AuthForm onLogin={login}/>} />
+        <Route path="/registration" component={Registration} /> 
+      </Router>
+    
+    );
   }
 }
 

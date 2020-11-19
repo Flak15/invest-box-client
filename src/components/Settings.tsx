@@ -87,7 +87,7 @@ const Settings = () => {
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Количество</Form.Label>
-              <Form.Control type="text" placeholder="Введите количество" name="value" value={modalInput.value} onChange={handleInput} />
+              <Form.Control type="text" placeholder="Введите количество" name="value" autoComplete="off" value={modalInput.value} onChange={handleInput} />
             </Form.Group>
           </Form>
         </Modal.Body>

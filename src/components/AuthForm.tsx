@@ -3,7 +3,7 @@ import axios from 'axios';
 import { setContext } from '../storage';
 import config from '../config';
 import { Form, Button, Container, Jumbotron } from 'react-bootstrap';
-
+// import { Link } from 'react-router-dom';
 const AuthForm = (props: any) => {
   const [formInputs, setFormInputs] = useState({ username: '', password: '' });
 
@@ -42,8 +42,11 @@ const AuthForm = (props: any) => {
             <Form.Label>Пароль</Form.Label>
             <Form.Control type="password" name="password" placeholder="Введите ваш пароль" onChange={onChange} value={formInputs.password}/>
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button className="mr-2" variant="secondary" type="submit">
             Вход
+          </Button>
+          <Button href="/registration" variant="outline-secondary" >
+            Регистрация
           </Button>
         </Form>
       </Jumbotron>
