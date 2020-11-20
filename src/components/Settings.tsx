@@ -3,13 +3,13 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { Iauth, IportfolioItem } from '../types/index';
 const Settings = () => {
   const [portfolio, setPortfolio] = useState([]);
   const [isShowModal, setIsShowModal] = useState(false);
   const [modalInput, setModalInput] = useState({  symbol: '', value: '' });
-
+  const [loading, setLoading] = useState(false);
   const showModal = () => {
     setIsShowModal(true);
   }
@@ -17,26 +17,24 @@ const Settings = () => {
     setIsShowModal(false);
   }
   const addInstrument =  async () => {
+    try {
       const authData: Iauth | null = getContext();
-      if (authData) {
-        await axios.post(`/portfolio/add`,
-        {
-          username: authData.username,
-          symbol: modalInput.symbol,
-          value: modalInput.value,
-        },
-        {
-          auth: authData,
-          baseURL: config.baseURL,
-        });
-        const res = await axios.get(`/portfolio/${authData.username}`, {
-          auth: authData,
-          baseURL: config.baseURL
-        });
-        setPortfolio(JSON.parse(res.data.p));
-      } else {
-        console.log('User undefined!');
+      if (!authData) {
+        throw new Error('User undefined!');
       }
+      await axios.post(`/portfolio/add`, { username: authData.username, ...modalInput }, { 
+        auth: authData,
+        baseURL: config.baseURL,
+      });
+      const res = await axios.get(`/portfolio/${authData.username}`, {
+        auth: authData,
+        baseURL: config.baseURL
+      });
+      setPortfolio(JSON.parse(res.data.p));
+    } catch (e) {
+      alert(e.message);
+      console.log('Error while adding new instrument: ', e);
+    }
       setIsShowModal(false);
     }
   
@@ -46,20 +44,29 @@ const Settings = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
     const getP = async () => {
       const authData: Iauth | null = getContext();
-      if (authData) {
+      try {
+        if (!authData) {
+          throw new Error('User undefined!');
+        }
         const res = await axios.get(`/portfolio/${authData.username}`, {
           auth: authData,
           baseURL: config.baseURL
         });
         setPortfolio(JSON.parse(res.data.p));
-      } else {
-        console.log('User undefined!');
+        setLoading(false);
+      } catch (e) {
+        alert(e.message);
+        console.log('Error while loading portfolio: ', e);
       }
     }
     getP();
   }, []);
+  if (loading) {
+    return <Spinner animation="border" variant="secondary" />
+  };
   return (
     <>
       <div className="container">

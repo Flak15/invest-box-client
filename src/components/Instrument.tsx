@@ -39,22 +39,21 @@ const Instrument = (props: any) => {
     setEdit(false);
     try {
       const authData: Iauth | null = getContext();
-      console.log('1');
-      if (authData) {
-        await axios.post(`/portfolio/update`,
-        {
-          username: authData.username,
-          symbol: instrument.symbol,
-          value: instrument.value
-        },
-        {
-          auth: authData,
-          baseURL: config.baseURL,
-        });
-      } else {
-        console.log('User undefined!')
+      if (!authData) {
+        throw new Error('User undefined!');
       }
+      await axios.post(`/portfolio/update`,
+      {
+        username: authData.username,
+        symbol: instrument.symbol,
+        value: instrument.value
+      },
+      {
+        auth: authData,
+        baseURL: config.baseURL,
+      });
     } catch (e) {
+      alert(e.message);
       console.log(e);
     }
   }
@@ -64,21 +63,21 @@ const Instrument = (props: any) => {
   const handleRemove = async () => {
     try {
       const authData: Iauth | null = getContext();
-      if (authData) {
-        await axios.post(`/portfolio/remove`,
-        {
-          username: authData.username,
-          symbol: instrument.symbol,
-        },
-        {
-          auth: authData,
-          baseURL: config.baseURL,
-        });
-      } else {
-        console.log('User undefined!')
+      if (!authData) {
+        throw new Error('user undefined!');
       }
+      await axios.post(`/portfolio/remove`,
+      {
+        username: authData.username,
+        symbol: instrument.symbol,
+      },
+      {
+        auth: authData,
+        baseURL: config.baseURL,
+      });
       setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.filter(inst => inst._id !== instrument._id));
     } catch (e) {
+      alert(e.message);
       console.log(e);
     }
   }

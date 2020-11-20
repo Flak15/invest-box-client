@@ -7,28 +7,34 @@ import { Iauth, IportfolioItem } from '../types/index';
 
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     const getP = async () => {
       const authData: Iauth | null = getContext();
-      if (authData) {
+      try {
+        if (!authData) {
+          throw new Error('User undefined!');
+        }
         const res = await axios.get(`/portfolio/${authData.username}`, {
           auth: authData,
           baseURL: config.baseURL
         });
         setPortfolio(JSON.parse(res.data.p));
-      } else {
-        console.log('User undefined!')
+        setLoading(false);
+      } catch (e) {
+        alert(e.message);
+        console.log('Error while loading portfolio: ', e);
       }
     }
-      getP();
+    getP();
   }, []); // как правильно определять зависимости?
 
   return (
     <div className="container">
       <div className="row justify-content-md-center">
         <div className="col-6">
-          <h2>Портфель</h2>
+          <h1>Портфель</h1>
           <table className="table">
             <thead>
               <tr>
@@ -46,8 +52,8 @@ const Portfolio = () => {
                     <td>{instrument.symbol}</td>
                     <td>{instrument.shortName}</td>
                     <td>{instrument.value}</td>
-                    <td>{instrument.totalValue / instrument.value}</td>
-                    <td>{instrument.totalValue}</td>
+                    <td>{(instrument.totalValue / instrument.value).toFixed(2)}</td>
+                    <td>{instrument.totalValue.toFixed(2)}</td>
                   </tr>
                 )
               })}

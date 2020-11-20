@@ -12,18 +12,11 @@ const Registration = () => {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post('/user', 
-        {
-          ...formInputs,
-        },
-        {
-          baseURL: config.baseURL,
-        }
-      );
+      await axios.post('/user', { ...formInputs }, { baseURL: config.baseURL });
       history.push('/');
     } catch (e) {
-      alert('login error!');
-      console.log(e);
+      alert(e.message);
+      console.log('Registration error: ', e);
     }
     setFormInputs({ username: '', password: '', code: '' });
   }

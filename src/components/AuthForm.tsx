@@ -13,7 +13,6 @@ const AuthForm = (props: any) => {
   }
   const onSubmit = async () => {
     try {
-      console.log(formInputs);
       await axios.get('/', {
           auth: formInputs,
           baseURL: config.baseURL,
@@ -22,12 +21,12 @@ const AuthForm = (props: any) => {
       props.onLogin();
       setContext(formInputs);
     } catch (e) {
-      alert('login error!');
-      console.log(e);
+      alert(e.message);
+      console.log('Login error: ', e);
     }
     setFormInputs({ username: '', password: '' });
   }
-
+  
   return (
     <Container className="p-4">
       <Jumbotron>
@@ -37,7 +36,6 @@ const AuthForm = (props: any) => {
             <Form.Label>Логин</Form.Label>
             <Form.Control type="name" name="username" placeholder="Введите ваш логин" onChange={onChange} value={formInputs.username}/>
           </Form.Group>
-
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Пароль</Form.Label>
             <Form.Control type="password" name="password" placeholder="Введите ваш пароль" onChange={onChange} value={formInputs.password}/>

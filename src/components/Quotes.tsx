@@ -7,21 +7,24 @@ import { Iauth, IportfolioItem } from '../types/index';
 
 const Quotes = () => {
   const [quotes, setQuotes] = useState([]);
-
   useEffect(() => {
     const getP = async () => {
       const authData: Iauth | null = getContext();
-      if (authData) {
-        const res = await axios.get(`/quotes/${authData.username}`, {
+      try {
+        if (!authData) {
+          throw new Error('User undefined!');
+        }
+        const res = await axios.get(`/portfolio/${authData.username}`, {
           auth: authData,
           baseURL: config.baseURL
         });
-        setQuotes(JSON.parse(res.data.quotes));
-      } else {
-        console.log('User undefined!')
+        setQuotes(JSON.parse(res.data.p));
+      } catch (e) {
+        alert(e.message);
+        console.log('Error while loading portfolio: ', e);
       }
     }
-      getP();
+    getP();
   }, []);
   return (
     <div className="container">
