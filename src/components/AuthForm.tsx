@@ -8,7 +8,6 @@ const AuthForm = (props: any) => {
   const [formInputs, setFormInputs] = useState({ username: '', password: '' });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
   }
   const onSubmit = async () => {
