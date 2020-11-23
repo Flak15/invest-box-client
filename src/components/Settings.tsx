@@ -1,10 +1,13 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { Iauth, IportfolioItem } from '../types/index';
+
+
 const Settings = () => {
   const [portfolio, setPortfolio] = useState([]);
   const [isShowModal, setIsShowModal] = useState(false);
@@ -111,4 +114,10 @@ const Settings = () => {
   )
 }
 
-export default Settings;
+
+const mapStateToProps = (state) => {
+  return {
+    portfolio: state.portfolio,
+  }  
+};
+export default connect(mapStateToProps)(Settings);
