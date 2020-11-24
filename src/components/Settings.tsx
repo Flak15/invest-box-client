@@ -1,13 +1,14 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Store } from 'redux';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
-import { Iauth, IportfolioItem } from '../types/index';
+import { Iauth, IportfolioItem, Istate } from '../types/index';
 import addPortfolioInstrument from 'src/store/actionCreators/addPortfolioInstrument';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 const Settings = () => {
   const [portfolio, setPortfolio] = useState([]);
@@ -116,7 +117,7 @@ const Settings = () => {
 }
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Istate) => {
   return {
     portfolio: state.portfolio,
   }  
@@ -126,4 +127,4 @@ const mapDispatchToProps = (dispatch: any) => {
     addInstument: bindActionCreators(addPortfolioInstrument, dispatch),
   }  
 };
-export default connect(mapStateToProps)(Settings);
+export default connect(mapStateToProps,  mapDispatchToProps)(Settings);

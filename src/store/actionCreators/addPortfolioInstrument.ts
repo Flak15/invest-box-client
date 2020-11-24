@@ -1,9 +1,10 @@
 import ADD_PORTFOLIO_INSTRUMENT from '../actions/addPortfolioInstrument';
-import { IportfolioItem} from '../../types/index';
+import { IportfolioItem, PortfolioAction } from '../../types/index';
 
-export default (value: IportfolioItem) => {
+const addPortfolioInstrument = (value: IportfolioItem): PortfolioAction => {
     return {
         type: ADD_PORTFOLIO_INSTRUMENT,
         value,
     }
 }
+export default addPortfolioInstrument;

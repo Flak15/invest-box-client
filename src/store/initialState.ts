@@ -1,9 +1,8 @@
-import { IportfolioItem } from '../types/index';
+import { IportfolioItem, Istate } from "src/types";
 
-interface Istore {
-  portfolio: IportfolioItem,
+
+
+const InitialState: Istate = {
+  portfolio: []
 }
-const InitialState = { 
-  portfolio: [],
-};
 export default InitialState;
