@@ -1,14 +1,21 @@
-import { Action, combineReducers, Store } from 'redux';
-import { PortfolioAction, PortfolioState } from 'src/types';
-import ADD_PORTFOLIO_INSTRUMENT from '../actions/addPortfolioInstrument';
+import { combineReducers } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
 import InitialState from '../initialState';
+import addPortfolioInstrument from '../actions/addPortfolioInstrument';
+import setPortfolio from '../actions/setPortfolio';
 
-const portfolio = (state = [], action: PortfolioAction): PortfolioState => {
-    switch(action.type) {
-        case ADD_PORTFOLIO_INSTRUMENT: return [ ...state, action.value ];
-        default: return state;
-    }
-};
+
+// const initialState: Istate = { portfolio: [] };
+
+const portfolio = createReducer(InitialState.portfolio, (builder) => {
+    builder
+      .addCase(addPortfolioInstrument, (state, action) => {
+        return [...state, action.payload];
+      })
+      .addCase(setPortfolio, (_, action) => {
+        return action.payload;
+      })
+  })
 
 const reducers = combineReducers({
     portfolio,

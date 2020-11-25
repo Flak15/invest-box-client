@@ -1,17 +1,22 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { bindActionCreators, Store } from 'redux';
+import { bindActionCreators } from 'redux';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { Iauth, IportfolioItem, Istate } from '../types/index';
-import addPortfolioInstrument from 'src/store/actionCreators/addPortfolioInstrument';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import setPortfolioAction from 'src/store/actions/setPortfolio';
 
-const Settings = () => {
-  const [portfolio, setPortfolio] = useState([]);
+interface IsettingsComponentProps {
+  portfolio: IportfolioItem[],
+  setPortfolio: typeof setPortfolioAction,
+}
+
+const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
+  // const [portfolio, setPortfolio] = useState([]);
+  console.log(portfolio);
   const [isShowModal, setIsShowModal] = useState(false);
   const [modalInput, setModalInput] = useState({  symbol: '', value: '' });
   const [loading, setLoading] = useState(false);
@@ -43,7 +48,6 @@ const Settings = () => {
       setIsShowModal(false);
     }
   
-  
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setModalInput( {...modalInput, [e.target.name]: e.target.value });
   }
@@ -68,7 +72,7 @@ const Settings = () => {
       }
     }
     getP();
-  }, []);
+  }, [setPortfolio]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
   };
@@ -116,7 +120,6 @@ const Settings = () => {
   )
 }
 
-
 const mapStateToProps = (state: Istate) => {
   return {
     portfolio: state.portfolio,
@@ -124,7 +127,7 @@ const mapStateToProps = (state: Istate) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addInstument: bindActionCreators(addPortfolioInstrument, dispatch),
+    setPortfolio: bindActionCreators(setPortfolioAction, dispatch),
   }  
 };
-export default connect(mapStateToProps,  mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

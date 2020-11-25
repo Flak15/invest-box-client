@@ -18,10 +18,3 @@ export interface IportfolioItem {
 }
 
 export type PortfolioState = IportfolioItem[]
-
-export type PortfolioAction = {
-  type: string,
-  value: IportfolioItem
-}
-
-export type DispatchType = (args: PortfolioAction) => PortfolioAction

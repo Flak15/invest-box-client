@@ -1,3 +1,5 @@
-const ADD_PORTFOLIO_INSTRUMENT = 'ADD_PORTFOLIO_INSTUMENT';
+import { createAction } from '@reduxjs/toolkit';
+import { IportfolioItem } from 'src/types';
 
-export default ADD_PORTFOLIO_INSTRUMENT;
+const addPortfolioInstrument = createAction<IportfolioItem>('ADD_PORTFOLIO_INSTRUMENT')
+export default addPortfolioInstrument;
