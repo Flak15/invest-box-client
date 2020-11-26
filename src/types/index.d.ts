@@ -3,7 +3,6 @@ export interface Iauth {
   password: string
 }
 
-
 export interface Istate {
   portfolio: IportfolioItem[],
 }

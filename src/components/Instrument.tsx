@@ -3,38 +3,22 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { Form, Button, Col } from 'react-bootstrap';
-import { Iauth, IportfolioItem } from '../types/index';
+import { Iauth, IportfolioItem, Istate } from '../types/index';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import changeInstrumentValueAction from 'src/store/actions/changeInstrumentValue';
+import InstrumentForm from './InstrumentForm';
 
-const InstrumentForm = (props: any) => {
-  const { handleSubmit, value, handleInput } = props;
-  return (<Form onSubmit={handleSubmit}>
-    <Form.Row>
-      <Col>
-        <Form.Group controlId="formValue">
-          <Form.Control type="text" value={value} onChange={handleInput}/>
-        </Form.Group>
-      </Col>
-      <Col>
-        <Button variant="outline-secondary" type="submit">
-          OK
-        </Button>
-      </Col>
-    </Form.Row>
-  </Form>);
+interface IinstrumentComponent {
+  changeInstrumentValue: typeof changeInstrumentValueAction,
+  instrument: IportfolioItem,
+  portfolio: IportfolioItem[],
+
 }
-
-const Instrument = (props: any) => {
+const Instrument = ({ instrument, portfolio, changeInstrumentValue }: IinstrumentComponent) => {
   const [edit, setEdit] = useState(false);
-  const { setPortfolio, instrument } = props;
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.map(inst => {
-      if (inst._id === instrument._id) {
-         return { ...inst, value: e.target.value };
-      }
-      return inst;
-    }));
-  }
+
   const handleSubmit = async () => {
     setEdit(false);
     try {
@@ -75,7 +59,7 @@ const Instrument = (props: any) => {
         auth: authData,
         baseURL: config.baseURL,
       });
-      setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.filter(inst => inst._id !== instrument._id));
+      // setPortfolio((prevPortfolio: IportfolioItem[]) => prevPortfolio.filter(inst => inst._id !== instrument._id));
     } catch (e) {
       alert(e.message);
       console.log(e);
@@ -88,14 +72,10 @@ const Instrument = (props: any) => {
       <div className="col-7"><b>{instrument.shortName}</b></div>
       {edit ?
         <div className="col-3">
-          <InstrumentForm 
-            handleSubmit={handleSubmit} 
-            value={instrument.value} 
-            handleInput={handleInput}
-          />
+          <InstrumentForm instrument={instrument} handleSubmit={handleSubmit} />
         </div> :
         <>
-          <div className="col-1"><b>{props.instrument.value}</b></div>
+          <div className="col-1"><b>{instrument.value}</b></div>
           <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleToggle}>Изменить</button></div>
         </>}
       <div className="col-2"><button type="button" className="btn btn-sm btn-light" onClick={handleRemove}>Удалить</button></div>
@@ -103,5 +83,15 @@ const Instrument = (props: any) => {
     </li>
   )
 }
+const mapStateToProps = (state: Istate) => {
+  return {
+    portfolio: state.portfolio,
+  }
+};
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    changeInstrumentValue: bindActionCreators(changeInstrumentValueAction, dispatch),
+  }
+}
 
-export default Instrument;
+export default connect(mapStateToProps, mapDispatchToProps)(Instrument);

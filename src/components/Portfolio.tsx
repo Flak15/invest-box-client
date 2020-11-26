@@ -3,10 +3,17 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { useState, useEffect } from 'react';
-import { Iauth, IportfolioItem } from '../types/index';
+import { Iauth, IportfolioItem, Istate } from '../types/index';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import setPortfolioAction from '../store/actions/setPortfolio';
 
-const Portfolio = () => {
-  const [portfolio, setPortfolio] = useState([]);
+interface IportfolioComponentProps {
+  portfolio: IportfolioItem[],
+  setPortfolio: typeof setPortfolioAction,
+}
+
+const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
@@ -28,7 +35,7 @@ const Portfolio = () => {
       }
     }
     getP();
-  }, []); // как правильно определять зависимости?
+  }, [setPortfolio]); // как правильно определять зависимости?
 
   return (
     <div className="container">
@@ -65,5 +72,15 @@ const Portfolio = () => {
     </div>
   )
 }
+const mapStateToProps = (state: Istate) => {
+  return {
+    portfolio: state.portfolio,
+  }  
+};
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setPortfolio: bindActionCreators(setPortfolioAction, dispatch),
+  }  
+};
 
-export default Portfolio;
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

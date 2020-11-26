@@ -15,10 +15,8 @@ interface IsettingsComponentProps {
 }
 
 const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
-  // const [portfolio, setPortfolio] = useState([]);
-  console.log(portfolio);
   const [isShowModal, setIsShowModal] = useState(false);
-  const [modalInput, setModalInput] = useState({  symbol: '', value: '' });
+  const [modalInput, setModalInput] = useState({ symbol: '', value: '' });
   const [loading, setLoading] = useState(false);
   const showModal = () => {
     setIsShowModal(true);
@@ -84,7 +82,7 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
         </div>
         <div className="row justify-content-md-center">
         <ul className="list-group col-8">
-            {portfolio.map((instrument: IportfolioItem) => (<Instrument key={instrument._id} instrument={instrument} setPortfolio={setPortfolio} />))}
+            {portfolio.map((instrument: IportfolioItem) => (<Instrument key={instrument._id} instrument={instrument} />))}
         </ul>
         </div>
         <div className="row justify-content-md-center mt-4">

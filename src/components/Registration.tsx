@@ -3,6 +3,7 @@ import { Container, Jumbotron, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import config from '../config';
 import { useHistory } from 'react-router-dom';
+
 const Registration = () => {
   const history = useHistory();
   const [formInputs, setFormInputs] = useState({ username: '', password: '', code: '' });
