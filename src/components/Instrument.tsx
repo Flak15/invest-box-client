@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
-import { Form, Button, Col } from 'react-bootstrap';
+
 import { Iauth, IportfolioItem, Istate } from '../types/index';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -17,7 +17,6 @@ interface IinstrumentComponent {
 }
 const Instrument = ({ instrument, portfolio, changeInstrumentValue }: IinstrumentComponent) => {
   const [edit, setEdit] = useState(false);
-
 
   const handleSubmit = async () => {
     setEdit(false);

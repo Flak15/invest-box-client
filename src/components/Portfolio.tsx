@@ -3,6 +3,7 @@ import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { useState, useEffect } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { Iauth, IportfolioItem, Istate } from '../types/index';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -36,7 +37,9 @@ const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
     }
     getP();
   }, [setPortfolio]); // как правильно определять зависимости?
-
+  if (loading) {
+    return <Spinner animation="border" variant="secondary" />
+  };
   return (
     <div className="container">
       <div className="row justify-content-md-center">

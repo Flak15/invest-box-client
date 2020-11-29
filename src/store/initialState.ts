@@ -1,4 +1,4 @@
-import { IportfolioItem, Istate } from "src/types";
+import { Istate } from "src/types";
 
 const InitialState: Istate = {
   portfolio: []

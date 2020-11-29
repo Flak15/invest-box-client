@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
-import { IportfolioItem, Istate } from '../types/index';
+import { IportfolioItem } from '../types/index';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import changeInstrumentValueAction from 'src/store/actions/changeInstrumentValue';

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { setContext } from '../storage';
 import config from '../config';
 import { Form, Button, Container, Jumbotron } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
+
 const AuthForm = (props: any) => {
   const [formInputs, setFormInputs] = useState({ username: '', password: '' });
 
