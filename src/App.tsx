@@ -10,6 +10,7 @@ import Quotes from './components/Quotes';
 import Settings from './components/Settings';
 import Main from './components/Main';
 import Registration from './components/Registration';
+
 const App = () => {
   const [auth, setAuth] = useState('logout');
   const login = () => {
@@ -30,14 +31,13 @@ const App = () => {
           <Route path="/news/" component={News} />
           <Route path="/portfolio/" component={Portfolio} />
           <Route path="/quotes/" component={Quotes} />
-          <Route path="/settings/" component={Settings} />
-          {/* render={props => <Settings {...props}/> для чего это*/} 
+          <Route path="/settings/" component={Settings} /> 
       </Router>
     );
   } else {
     return (
       <Router>
-        <Route path="/" exact render={props => <AuthForm onLogin={login}/>} />
+        <Route path="/" exact render={(props) => <AuthForm onLogin={login}/>} />
         <Route path="/registration" component={Registration} /> 
       </Router>
     

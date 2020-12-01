@@ -1,7 +1,8 @@
 import { Istate } from "src/types";
 
 const InitialState: Istate = {
-  portfolio: []
+  portfolio: [],
+  quotes: []
 }
 
 export default InitialState;

@@ -1,14 +1,19 @@
 import React, { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import { removeContext } from '../storage';
 
-const NavBar = (props: any) => {
+interface InavBarComponent {
+  logout: () => void
+}
+
+const NavBar = ({ logout }: InavBarComponent) => {
+  const history = useHistory();
   const signOut = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     removeContext();
-    props.logout();
-    window.history.pushState(null, 'signOut', '/');
+    logout();
+    history.push('/');
   }
   return (
     <Navbar bg="light" expand="lg">

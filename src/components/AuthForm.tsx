@@ -4,9 +4,12 @@ import { setContext } from '../storage';
 import config from '../config';
 import { Form, Button, Container, Jumbotron } from 'react-bootstrap';
 
-const AuthForm = (props: any) => {
-  const [formInputs, setFormInputs] = useState({ username: '', password: '' });
+interface IauthFormComponent {
+  onLogin: () => void
+}
 
+const AuthForm = ({ onLogin }: IauthFormComponent) => {
+  const [formInputs, setFormInputs] = useState({ username: '', password: '' });
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
   }
@@ -17,7 +20,7 @@ const AuthForm = (props: any) => {
           baseURL: config.baseURL,
         }
       );
-      props.onLogin();
+      onLogin();
       setContext(formInputs);
     } catch (e) {
       alert(e.message);

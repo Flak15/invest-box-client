@@ -4,8 +4,7 @@ import InitialState from '../initialState';
 import addPortfolioInstrument from '../actions/addPortfolioInstrument';
 import setPortfolio from '../actions/setPortfolio';
 import changeInstumentValue from '../actions/changeInstrumentValue';
-
-// const initialState: Istate = { portfolio: [] };
+import setQuotes from '../actions/setQuotes';
 
 const portfolio = createReducer(InitialState.portfolio, (builder) => {
     builder
@@ -22,10 +21,18 @@ const portfolio = createReducer(InitialState.portfolio, (builder) => {
         console.log(state);
         return state;
       })
-  })
+});
+
+const quotes = createReducer(InitialState.quotes, (builder) => {
+  builder
+    .addCase(setQuotes, (_, action) => {
+      return action.payload;
+    })
+});
 
 const reducers = combineReducers({
     portfolio,
+    quotes
 });
 
 export default reducers;

@@ -38,13 +38,14 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
         auth: authData,
         baseURL: config.baseURL
       });
+      setModalInput({ symbol: '', value: '' });
       setPortfolio(JSON.parse(res.data.p));
     } catch (e) {
       alert(e.message);
       console.log('Error while adding new instrument: ', e);
     }
-      setIsShowModal(false);
-    }
+    setIsShowModal(false);
+  }
   
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setModalInput( {...modalInput, [e.target.name]: e.target.value });
