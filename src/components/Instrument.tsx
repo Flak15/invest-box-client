@@ -68,7 +68,7 @@ const Instrument = ({ instrument, portfolio, changeInstrumentValue }: Iinstrumen
   return (
     <li className="list-group-item">
       <div className="row">
-      <div className="col-7"><b>{instrument.shortName}</b></div>
+      <div className="col-7"><b>{instrument.priceData.shortName}</b></div>
       {edit ?
         <div className="col-3">
           <InstrumentForm instrument={instrument} handleSubmit={handleSubmit} />

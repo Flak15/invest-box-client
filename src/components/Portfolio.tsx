@@ -60,7 +60,7 @@ const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
                 return (
                   <tr key={instrument._id}>
                     <td>{instrument.symbol}</td>
-                    <td>{instrument.shortName}</td>
+                    <td>{instrument.priceData.shortName}</td>
                     <td>{instrument.value}</td>
                     <td>{(instrument.totalValue / instrument.value).toFixed(2)}</td>
                     <td>{instrument.totalValue.toFixed(2)}</td>

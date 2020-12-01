@@ -12,8 +12,8 @@ export interface IportfolioItem {
   symbol: string,
   value: number,
   totalValue: number,
-  shortName: string,
-  currency: string
+  priceData: MetaData,
+  financialData: MetaData
 }
 
-export type PortfolioState = IportfolioItem[]
+export type PortfolioState = IportfolioItem[];
