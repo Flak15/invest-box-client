@@ -14,7 +14,8 @@ export interface IportfolioItem {
   value: number,
   totalValue: number,
   priceData: MetaData,
-  financialData: MetaData
+  financialData: MetaData,
+  summaryDetail: MetaData
 }
 
 export interface Iinstrument {
@@ -22,7 +23,8 @@ export interface Iinstrument {
   symbol: string,
   price: number,
   priceData: MetaData,
-  financialData: MetaData
+  financialData: MetaData,
+  summaryDetail: MetaData
 }
 
 export type PortfolioState = IportfolioItem[];

@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { Iauth, Iinstrument, Istate } from '../types/index';
 import setQuotes from 'src/store/actions/setQuotes';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -12,9 +13,24 @@ interface IquotesComponent {
   quotes: Iinstrument[],
   setQuotes: (quotes: Iinstrument[]) => void
 }
+const getSorter = (sortParam: string, sortOrder: number) => {
+  const sorters: any = {
+    symbol: (a: Iinstrument, b: Iinstrument) => (a.symbol >= b.symbol ? 1 : -1) * sortOrder,
+    name: (a: Iinstrument, b: Iinstrument) =>  (a.priceData.shortName >= b.priceData.shortName ? 1 : -1) * sortOrder,
+    price: (a: Iinstrument, b: Iinstrument) =>  (a.price >= b.price ? 1 : -1) * sortOrder,
+    pe: (a: Iinstrument, b: Iinstrument) => 1,
+  };
+  return sorters[sortParam];
+}
+
 
 const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
-
+  const [sortParam, setSortParam] = useState('symbol');
+  const [sortOrder, setSortOrder] = useState(1);
+  const onClick = (e:any) => {
+    setSortParam(e.target.name);
+    setSortOrder(sortOrder * -1);
+  }
   useEffect(() => {
     const getQuotes = async () => {
       const authData: Iauth | null = getContext();
@@ -38,30 +54,30 @@ const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
   return (
     <div className="container">
       <div className="row justify-content-md-center">
-        <div className="col-6">
-        <h1>Quotes</h1>
-        <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Symbol</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">P/E</th>
-              </tr>
-            </thead>
-            <tbody>
-              {quotes.slice().sort((i1, i2) => i1.symbol <= i2.symbol ? -1 : 1).map((instrument) => {
-                return (
-                  <tr key={instrument._id}>
-                    <td>{instrument.symbol}</td>
-                    <td>{instrument.priceData.shortName}</td>
-                    <td>{instrument.price.toFixed(2)}</td>
-                    <td>{instrument.financialData.}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+        <div className="col-9">
+          <h1>Quotes</h1>
+          <table className="table">
+              <thead>
+                <tr>
+                  <td><Button variant="link" name="symbol" onClick={onClick}>{sortParam === 'symbol' ? <b>Symbol</b> : 'Symbol'}</Button></td>
+                  <td><Button variant="link" name="name" onClick={onClick}>{sortParam === 'name' ? <b>Name</b> : 'Name'}</Button></td>
+                  <td><Button variant="link" name="price" onClick={onClick}>{sortParam === 'symprice' ? <b>Price</b> : 'Price'}</Button></td>
+                  <td><Button variant="link" name="pe" onClick={onClick}>P/E (TTM)</Button></td>
+                </tr>
+              </thead>
+              <tbody>
+                {quotes.slice().sort(getSorter(sortParam, sortOrder)).map((instrument) => {
+                  return (
+                    <tr key={instrument._id}>
+                      <td>{instrument.symbol}</td>
+                      <td>{instrument.priceData.shortName}</td>
+                      <td>{instrument.price.toFixed(2)}</td>
+                      <td>{instrument.summaryDetail.trailingPE ? instrument.summaryDetail.trailingPE.fmt : ''}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
         </div>
       </div>
     </div>
