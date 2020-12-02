@@ -28,8 +28,14 @@ const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
   const [sortParam, setSortParam] = useState('symbol');
   const [sortOrder, setSortOrder] = useState(1);
   const onClick = (e:any) => {
-    setSortParam(e.target.name);
-    setSortOrder(sortOrder * -1);
+    if (e.target.name === sortParam) {
+      setSortOrder(sortOrder * -1);
+    } else {
+      setSortParam(e.target.name);
+      setSortOrder(1);
+    }
+    
+    
   }
   useEffect(() => {
     const getQuotes = async () => {
@@ -61,8 +67,8 @@ const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
                 <tr>
                   <td><Button variant="link" name="symbol" onClick={onClick}>{sortParam === 'symbol' ? <b>Symbol</b> : 'Symbol'}</Button></td>
                   <td><Button variant="link" name="name" onClick={onClick}>{sortParam === 'name' ? <b>Name</b> : 'Name'}</Button></td>
-                  <td><Button variant="link" name="price" onClick={onClick}>{sortParam === 'symprice' ? <b>Price</b> : 'Price'}</Button></td>
-                  <td><Button variant="link" name="pe" onClick={onClick}>P/E (TTM)</Button></td>
+                  <td><Button variant="link" name="price" onClick={onClick}>{sortParam === 'price' ? <b>Price</b> : 'Price'}</Button></td>
+                  <td><Button variant="link" name="pe" onClick={onClick}>{sortParam === 'pe' ? <b>P/E (TTM)</b> : 'P/E (TTM)'}</Button></td>
                 </tr>
               </thead>
               <tbody>
