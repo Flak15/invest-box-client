@@ -5,8 +5,11 @@ import addPortfolioInstrument from '../actions/addPortfolioInstrument';
 import setPortfolio from '../actions/setPortfolio';
 import changeInstumentValue from '../actions/changeInstrumentValue';
 import setQuotes from '../actions/setQuotes';
+import { IportfolioItem } from '../../types/index';
 
-const portfolio = createReducer(InitialState.portfolio, (builder) => {
+const portfolioInitialState: IportfolioItem[] = []; //тип
+
+const portfolio = createReducer(portfolioInitialState, (builder) => {
     builder
       .addCase(addPortfolioInstrument, (state, action) => {
         return [...state, action.payload];

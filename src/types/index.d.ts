@@ -28,3 +28,10 @@ export interface Iinstrument {
 }
 
 export type PortfolioState = IportfolioItem[];
+
+const item: IportfolioItem = { 
+  _id: '1',
+
+}
+
+console.log(item.symbol) // must throw error

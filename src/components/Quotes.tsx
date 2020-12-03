@@ -5,14 +5,13 @@ import { getContext } from '../storage';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Iauth, Iinstrument, Istate } from '../types/index';
-import setQuotes from 'src/store/actions/setQuotes';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import setQuotesAction from 'src/store/actions/setQuotes';
+import { useSelector, useDispatch } from 'react-redux';
 
-interface IquotesComponent {
-  quotes: Iinstrument[],
-  setQuotes: (quotes: Iinstrument[]) => void
-}
+// type IquotesComponent = {
+//   quotes: Iinstrument[],
+//   setQuotes: (quotes: Iinstrument[]) => void
+// }
 const getSorter = (sortParam: string, sortOrder: number) => {
   const sorters: any = {
     symbol: (a: Iinstrument, b: Iinstrument) => (a.symbol >= b.symbol ? 1 : -1) * sortOrder,
@@ -24,9 +23,11 @@ const getSorter = (sortParam: string, sortOrder: number) => {
 }
 
 
-const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
+const Quotes = () => {
   const [sortParam, setSortParam] = useState('symbol');
   const [sortOrder, setSortOrder] = useState(1);
+  const quotes = useSelector((state) => state.quotes);
+  const dispatch = useDispatch();
   const onClick = (e:any) => {
     if (e.target.name === sortParam) {
       setSortOrder(sortOrder * -1);
@@ -48,14 +49,14 @@ const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
           auth: authData,
           baseURL: config.baseURL
         });
-        setQuotes(JSON.parse(res.data.allI));
+        dispatch(setQuotesAction(JSON.parse(res.data.allI)));
       } catch (e) {
         alert(e.message);
         console.log('Error while loading insruments: ', e);
       }
     }
     getQuotes();
-  }, [setQuotes]);
+  }, [dispatch]);
 
   return (
     <div className="container">
@@ -89,15 +90,16 @@ const Quotes = ({ quotes, setQuotes }: IquotesComponent) => {
     </div>
   )
 }
-const mapStateToProps = (state: Istate) => {
-  return {
-    quotes: state.quotes,
-  }  
-};
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setQuotes: bindActionCreators(setQuotes, dispatch),
-  }  
-};
+// const mapStateToProps = (state: Istate) => { // -> hooks
+//   return {
+//     quotes: state.quotes,
+//   }  
+// };
+// const mapDispatchToProps = (dispatch: Dispatch) => {
+//   return {
+//     setQuotes: bindActionCreators(setQuotesAction, dispatch),
+//   }  
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quotes);
+// export default connect(null, mapDispatchToProps)(Quotes);
+export default Quotes;
