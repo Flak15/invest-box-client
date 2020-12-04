@@ -4,18 +4,14 @@ import config from '../config';
 import { getContext } from '../storage';
 import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { Iauth, IportfolioItem, Istate } from '../types/index';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { Iauth, IportfolioItem } from '../types/index';
+import { useDispatch, useSelector } from 'react-redux';
 import setPortfolioAction from '../store/actions/setPortfolio';
 
-interface IportfolioComponentProps {
-  portfolio: IportfolioItem[],
-  setPortfolio: typeof setPortfolioAction,
-}
-
-const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
+const Portfolio = () => {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const portfolio = useSelector((state) => state.portfolio);
   useEffect(() => {
     setLoading(true);
     const getP = async () => {
@@ -28,7 +24,7 @@ const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
           auth: authData,
           baseURL: config.baseURL
         });
-        setPortfolio(JSON.parse(res.data.p));
+        dispatch(setPortfolioAction(JSON.parse(res.data.p)));
         setLoading(false);
       } catch (e) {
         alert(e.message);
@@ -36,7 +32,7 @@ const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
       }
     }
     getP();
-  }, [setPortfolio]); // как правильно определять зависимости?
+  }, [dispatch]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
   };
@@ -75,15 +71,5 @@ const Portfolio = ({ portfolio, setPortfolio }: IportfolioComponentProps) => {
     </div>
   )
 }
-const mapStateToProps = (state: Istate) => {
-  return {
-    portfolio: state.portfolio,
-  }  
-};
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setPortfolio: bindActionCreators(setPortfolioAction, dispatch),
-  }  
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+export default Portfolio;

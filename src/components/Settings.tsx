@@ -1,23 +1,19 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import config from '../config';
 import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
-import { Iauth, IportfolioItem, Istate } from '../types/index';
+import { Iauth, IportfolioItem } from '../types/index';
 import setPortfolioAction from 'src/store/actions/setPortfolio';
 
-interface IsettingsComponentProps {
-  portfolio: IportfolioItem[],
-  setPortfolio: typeof setPortfolioAction,
-}
-
-const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
+const Settings = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [modalInput, setModalInput] = useState({ symbol: '', value: '' });
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const portfolio = useSelector((state) => state.portfolio);
   const showModal = () => {
     setIsShowModal(true);
   }
@@ -39,7 +35,7 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
         baseURL: config.baseURL
       });
       setModalInput({ symbol: '', value: '' });
-      setPortfolio(JSON.parse(res.data.p));
+      dispatch(setPortfolioAction(JSON.parse(res.data.p)));
     } catch (e) {
       alert(e.message);
       console.log('Error while adding new instrument: ', e);
@@ -63,7 +59,7 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
           auth: authData,
           baseURL: config.baseURL
         });
-        setPortfolio(JSON.parse(res.data.p));
+        dispatch(setPortfolioAction(JSON.parse(res.data.p)));
         setLoading(false);
       } catch (e) {
         alert(e.message);
@@ -71,7 +67,7 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
       }
     }
     getP();
-  }, [setPortfolio]);
+  }, [dispatch]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
   };
@@ -119,14 +115,4 @@ const Settings = ({ portfolio, setPortfolio }: IsettingsComponentProps) => {
   )
 }
 
-const mapStateToProps = (state: Istate) => {
-  return {
-    portfolio: state.portfolio,
-  }  
-};
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setPortfolio: bindActionCreators(setPortfolioAction, dispatch),
-  }  
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default Settings;

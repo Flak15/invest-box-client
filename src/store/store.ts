@@ -1,12 +1,15 @@
-import { createStore, Store } from 'redux';
-// import initalState from './initialState';
+import { createStore, applyMiddleware, Store } from 'redux';
 import reducers from './reducers/index';
+import createSagaMiddleware from 'redux-saga';
+import { watchLoadPortfolio } from './saga/saga';
 
-// const store: Store = createStore(reducers, initalState); // какой тип initialStore?
 export type State = ReturnType<typeof reducers>;
 
 declare module "react-redux" {
   interface DefaultRootState extends State {}
 }
-const store: Store = createStore(reducers);
+
+const sagaMiddleware = createSagaMiddleware();
+const store: Store = createStore(reducers, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(watchLoadPortfolio);
 export default store;

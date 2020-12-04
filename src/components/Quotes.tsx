@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Iauth, Iinstrument, Istate } from '../types/index';
+import { Iauth, Iinstrument } from '../types/index';
 import setQuotesAction from 'src/store/actions/setQuotes';
 import { useSelector, useDispatch } from 'react-redux';
+import loadPortfolio from 'src/store/actions/loadPortfolio';
 
-// type IquotesComponent = {
-//   quotes: Iinstrument[],
-//   setQuotes: (quotes: Iinstrument[]) => void
-// }
 const getSorter = (sortParam: string, sortOrder: number) => {
   const sorters: any = {
     symbol: (a: Iinstrument, b: Iinstrument) => (a.symbol >= b.symbol ? 1 : -1) * sortOrder,
@@ -22,21 +19,19 @@ const getSorter = (sortParam: string, sortOrder: number) => {
   return sorters[sortParam];
 }
 
-
 const Quotes = () => {
   const [sortParam, setSortParam] = useState('symbol');
   const [sortOrder, setSortOrder] = useState(1);
   const quotes = useSelector((state) => state.quotes);
   const dispatch = useDispatch();
-  const onClick = (e:any) => {
-    if (e.target.name === sortParam) {
+  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(loadPortfolio());
+    if (e.currentTarget.name === sortParam) {
       setSortOrder(sortOrder * -1);
     } else {
-      setSortParam(e.target.name);
+      setSortParam(e.currentTarget.name);
       setSortOrder(1);
     }
-    
-    
   }
   useEffect(() => {
     const getQuotes = async () => {
@@ -56,6 +51,8 @@ const Quotes = () => {
       }
     }
     getQuotes();
+    
+
   }, [dispatch]);
 
   return (
@@ -90,16 +87,5 @@ const Quotes = () => {
     </div>
   )
 }
-// const mapStateToProps = (state: Istate) => { // -> hooks
-//   return {
-//     quotes: state.quotes,
-//   }  
-// };
-// const mapDispatchToProps = (dispatch: Dispatch) => {
-//   return {
-//     setQuotes: bindActionCreators(setQuotesAction, dispatch),
-//   }  
-// };
 
-// export default connect(null, mapDispatchToProps)(Quotes);
 export default Quotes;

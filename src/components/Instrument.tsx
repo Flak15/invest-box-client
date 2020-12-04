@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { getContext } from '../storage';
-import { Iauth, IportfolioItem, Istate } from '../types/index';
-import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { Iauth, IportfolioItem } from '../types/index';
+import { useDispatch, useSelector } from 'react-redux';
 import InstrumentForm from './InstrumentForm';
 import setPortfolioAction from 'src/store/actions/setPortfolio';
 
 interface IinstrumentComponent {
   instrument: IportfolioItem,
-  portfolio: IportfolioItem[],
-  setPortfolio: (portfolio: IportfolioItem[]) => void
 }
-const Instrument = ({ instrument, portfolio, setPortfolio }: IinstrumentComponent) => {
+const Instrument = ({ instrument }: IinstrumentComponent) => {
   const [edit, setEdit] = useState(false);
+  const dispatch = useDispatch();
+  const portfolio = useSelector((state) => state.portfolio);
   const handleSubmit = async () => {
     setEdit(false);
     try {
@@ -55,7 +54,7 @@ const Instrument = ({ instrument, portfolio, setPortfolio }: IinstrumentComponen
         auth: authData,
         baseURL: config.baseURL,
       });
-      setPortfolio(portfolio.filter(inst => inst._id !== instrument._id));
+      dispatch(setPortfolioAction(portfolio.filter(inst => inst._id !== instrument._id)));
     } catch (e) {
       alert(e.message);
       console.log(e);
@@ -79,15 +78,5 @@ const Instrument = ({ instrument, portfolio, setPortfolio }: IinstrumentComponen
     </li>
   )
 }
-const mapStateToProps = (state: Istate) => {
-  return {
-    portfolio: state.portfolio,
-  }
-};
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setPortfolio: bindActionCreators(setPortfolioAction, dispatch),
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Instrument);
+export default Instrument; 
