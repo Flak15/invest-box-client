@@ -1,11 +1,7 @@
 import React, { MouseEvent } from 'react';
-import axios from 'axios';
-import config from '../config';
-import { getContext } from '../storage';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Iauth, Iinstrument } from '../types/index';
-import setQuotesAction from 'src/store/actions/setQuotes';
+import { Iinstrument } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
 import loadPortfolio from 'src/store/actions/loadPortfolio';
 
@@ -25,7 +21,7 @@ const Quotes = () => {
   const quotes = useSelector((state) => state.quotes);
   const dispatch = useDispatch();
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(loadPortfolio());
+    
     if (e.currentTarget.name === sortParam) {
       setSortOrder(sortOrder * -1);
     } else {
@@ -34,24 +30,24 @@ const Quotes = () => {
     }
   }
   useEffect(() => {
-    const getQuotes = async () => {
-      const authData: Iauth | null = getContext();
-      try {
-        if (!authData) {
-          throw new Error('User undefined!');
-        }
-        const res = await axios.get(`/instrument/all`, {
-          auth: authData,
-          baseURL: config.baseURL
-        });
-        dispatch(setQuotesAction(JSON.parse(res.data.allI)));
-      } catch (e) {
-        alert(e.message);
-        console.log('Error while loading insruments: ', e);
-      }
-    }
-    getQuotes();
-    
+    // const getQuotes = async () => {
+    //   const authData: Iauth | null = getContext();
+    //   try {
+    //     if (!authData) {
+    //       throw new Error('User undefined!');
+    //     }
+    //     const res = await axios.get(`/instrument/all`, {
+    //       auth: authData,
+    //       baseURL: config.baseURL
+    //     });
+    //     dispatch(setQuotesAction(JSON.parse(res.data.allI)));
+    //   } catch (e) {
+    //     alert(e.message);
+    //     console.log('Error while loading insruments: ', e);
+    //   }
+    // }
+    // getQuotes();
+    dispatch(loadPortfolio());
 
   }, [dispatch]);
 
