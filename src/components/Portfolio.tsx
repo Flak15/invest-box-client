@@ -1,38 +1,18 @@
 import React from 'react';
-import axios from 'axios';
-import config from '../config';
-import { getContext } from '../storage';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { Iauth, IportfolioItem } from '../types/index';
+import { IportfolioItem } from '../types/index';
 import { useDispatch, useSelector } from 'react-redux';
-import setPortfolioAction from '../store/actions/setPortfolio';
+import { REQUEST_PORTFOLIO } from '../store/portfolio/actions/requestPortfolio';
 
 const Portfolio = () => {
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const portfolio = useSelector((state) => state.portfolio);
+  const portfolio = useSelector((state) => state.portfolio.list);
+  const loading = useSelector((state) => state.portfolio.loading);
   useEffect(() => {
-    setLoading(true);
-    const getP = async () => {
-      const authData: Iauth | null = getContext();
-      try {
-        if (!authData) {
-          throw new Error('User undefined!');
-        }
-        const res = await axios.get(`/portfolio/${authData.username}`, {
-          auth: authData,
-          baseURL: config.baseURL
-        });
-        dispatch(setPortfolioAction(JSON.parse(res.data.p)));
-        setLoading(false);
-      } catch (e) {
-        alert(e.message);
-        console.log('Error while loading portfolio: ', e);
-      }
-    }
-    getP();
+    dispatch(REQUEST_PORTFOLIO());
   }, [dispatch]);
+
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
   };

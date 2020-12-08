@@ -5,7 +5,7 @@ import { getContext } from '../storage';
 import { Iauth, IportfolioItem } from '../types/index';
 import { useDispatch, useSelector } from 'react-redux';
 import InstrumentForm from './InstrumentForm';
-import setPortfolioAction from 'src/store/actions/setPortfolio';
+import setPortfolioAction from 'src/store/portfolio/actions/setPortfolio';
 
 interface IinstrumentComponent {
   instrument: IportfolioItem,
@@ -13,7 +13,7 @@ interface IinstrumentComponent {
 const Instrument = ({ instrument }: IinstrumentComponent) => {
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
-  const portfolio = useSelector((state) => state.portfolio);
+  const portfolio = useSelector((state) => state.portfolio.list);
   const handleSubmit = async () => {
     setEdit(false);
     try {

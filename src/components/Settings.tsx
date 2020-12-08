@@ -6,41 +6,39 @@ import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { Iauth, IportfolioItem } from '../types/index';
-import setPortfolioAction from 'src/store/actions/setPortfolio';
+import { REQUEST_PORTFOLIO } from '../store/portfolio/actions/requestPortfolio';
+import { ADD_PORTFOLIO_INSTRUMENT } from '../store/portfolio/actions/addPortfolioInstrument';
 
 const Settings = () => {
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [modalInput, setModalInput] = useState({ symbol: '', value: '' });
-  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalInput, setModalInput] = useState({ symbol: '', value: 0 });
   const dispatch = useDispatch();
-  const portfolio = useSelector((state) => state.portfolio);
-  const showModal = () => {
-    setIsShowModal(true);
+  const portfolio = useSelector((state) => state.portfolio.list);
+  const loading = useSelector((state) => state.portfolio.loading);
+  const doShowModal = () => {
+    setShowModal(true);
   }
   const hideModal = () => {
-    setIsShowModal(false);
+    setShowModal(false);
   }
-  const addInstrument =  async () => {
-    try {
-      const authData: Iauth | null = getContext();
-      if (!authData) {
-        throw new Error('User undefined!');
-      }
-      await axios.post(`/portfolio/add`, { username: authData.username, ...modalInput }, { 
-        auth: authData,
-        baseURL: config.baseURL,
-      });
-      const res = await axios.get(`/portfolio/${authData.username}`, {
-        auth: authData,
-        baseURL: config.baseURL
-      });
-      setModalInput({ symbol: '', value: '' });
-      dispatch(setPortfolioAction(JSON.parse(res.data.p)));
-    } catch (e) {
-      alert(e.message);
-      console.log('Error while adding new instrument: ', e);
-    }
-    setIsShowModal(false);
+  const addInstrument = () => {
+    // try {
+    //   const authData: Iauth | null = getContext();
+    //   if (!authData) {
+    //     throw new Error('User undefined!');
+    //   }
+    //   await axios.post(`/portfolio/add`, { username: authData.username, ...modalInput }, { 
+    //     auth: authData,
+    //     baseURL: config.baseURL,
+    //   });
+    //   setModalInput({ symbol: '', value: '' });
+    //   // dispatch(REQUEST_PORTFOLIO()); //должно работать через сагу
+    // } catch (e) {
+    //   alert(e.message);
+    //   console.log('Error while adding new instrument: ', e);
+    // }
+    dispatch(ADD_PORTFOLIO_INSTRUMENT(modalInput));
+    setShowModal(false);
   }
   
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,25 +46,7 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    setLoading(true);
-    const getP = async () => {
-      const authData: Iauth | null = getContext();
-      try {
-        if (!authData) {
-          throw new Error('User undefined!');
-        }
-        const res = await axios.get(`/portfolio/${authData.username}`, {
-          auth: authData,
-          baseURL: config.baseURL
-        });
-        dispatch(setPortfolioAction(JSON.parse(res.data.p)));
-        setLoading(false);
-      } catch (e) {
-        alert(e.message);
-        console.log('Error while loading portfolio: ', e);
-      }
-    }
-    getP();
+    dispatch(REQUEST_PORTFOLIO());
   }, [dispatch]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
@@ -83,10 +63,10 @@ const Settings = () => {
         </ul>
         </div>
         <div className="row justify-content-md-center mt-4">
-          <div className="col-2 "><button type="button" className="btn btn-outline-secondary" onClick={showModal}>Добавить</button></div>
+          <div className="col-2 "><button type="button" className="btn btn-outline-secondary" onClick={doShowModal}>Добавить</button></div>
         </div>
       </div>
-      <Modal show={isShowModal} onHide={hideModal}>
+      <Modal show={showModal} onHide={hideModal}>
         <Modal.Header closeButton>
           <Modal.Title>Добавить инструмент в портфель</Modal.Title>
         </Modal.Header>

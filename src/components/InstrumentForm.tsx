@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import { IportfolioItem } from '../types/index';
 import { useDispatch } from 'react-redux';
-import changeInstrumentValueAction from 'src/store/actions/changeInstrumentValue';
+import changeInstrumentValueAction from 'src/store/portfolio/actions/updateValue';
 
 interface IinstrumentFormComponent {
   instrument: IportfolioItem,

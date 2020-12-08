@@ -1,10 +1,9 @@
 import React, { MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { Iinstrument } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
-// import loadPortfolio from 'src/store/actions/loadPortfolio';
-import { FETCH_QUOTES } from 'src/store/actions/quotes';
+import { FETCH_QUOTES } from 'src/store/quotes/actions/quotesActions';
 
 const getSorter = (sortParam: string, sortOrder: number) => {
   const sorters: any = {
@@ -19,7 +18,8 @@ const getSorter = (sortParam: string, sortOrder: number) => {
 const Quotes = () => {
   const [sortParam, setSortParam] = useState('symbol');
   const [sortOrder, setSortOrder] = useState(1);
-  const quotes = useSelector((state) => state.quotes.quotes);
+  const quotes = useSelector((state) => state.quotes.list);
+  const loading = useSelector((state) => state.quotes.loading);
   const dispatch = useDispatch();
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     
@@ -31,26 +31,11 @@ const Quotes = () => {
     }
   }
   useEffect(() => {
-    // const getQuotes = async () => {
-    //   const authData: Iauth | null = getContext();
-    //   try {
-    //     if (!authData) {
-    //       throw new Error('User undefined!');
-    //     }
-    //     const res = await axios.get(`/instrument/all`, {
-    //       auth: authData,
-    //       baseURL: config.baseURL
-    //     });
-    //     dispatch(setQuotesAction(JSON.parse(res.data.allI)));
-    //   } catch (e) {
-    //     alert(e.message);
-    //     console.log('Error while loading insruments: ', e);
-    //   }
-    // }
-    // getQuotes();
     dispatch(FETCH_QUOTES());
   }, [dispatch]);
-
+  if (loading) {
+    return <Spinner animation="border" variant="secondary" />
+  };
   return (
     <div className="container">
       <div className="row justify-content-md-center">
