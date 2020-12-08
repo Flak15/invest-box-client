@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
-import InitialState from '../initialState';
 import addPortfolioInstrument from '../actions/addPortfolioInstrument';
 import setPortfolio from '../actions/setPortfolio';
 import changeInstumentValue from '../actions/changeInstrumentValue';
-import setQuotes from '../actions/setQuotes';
-import { IportfolioItem } from '../../types/index';
+// import setQuotes from '../actions/setQuotes';
+import { Iinstrument, IportfolioItem } from '../../types/index';
+import { FETCH_QUOTES_REQUEST, FETCH_QUOTES_SUCCESS, FETCH_QUOTES_FAIL } from '../actions/quotes';
 
 const portfolioInitialState: IportfolioItem[] = []; //тип
 
@@ -26,10 +26,28 @@ const portfolio = createReducer(portfolioInitialState, (builder) => {
       })
 });
 
-const quotes = createReducer(InitialState.quotes, (builder) => {
+interface IquotesState {
+  quotes: Iinstrument[],
+  loading: boolean,
+  errors: boolean
+}
+
+const quotesInitialState: IquotesState = { 
+  quotes: [],
+  loading: false,
+  errors: false
+};
+
+const quotes = createReducer(quotesInitialState, (builder) => {
   builder
-    .addCase(setQuotes, (_, action) => {
-      return action.payload;
+    .addCase(FETCH_QUOTES_REQUEST, (state, _) => {
+      return { quotes: state.quotes, loading: true, errors: false }; //hmmm?? state?
+    })
+    .addCase(FETCH_QUOTES_SUCCESS, (_, action) => {
+      return { quotes: action.payload, loading: false, errors: false };
+    })
+    .addCase(FETCH_QUOTES_FAIL, (state, _) => {
+      return { quotes: state.quotes, loading: false, errors: true };
     })
 });
 

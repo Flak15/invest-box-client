@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Iinstrument } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
-import loadPortfolio from 'src/store/actions/loadPortfolio';
+// import loadPortfolio from 'src/store/actions/loadPortfolio';
+import { FETCH_QUOTES } from 'src/store/actions/quotes';
 
 const getSorter = (sortParam: string, sortOrder: number) => {
   const sorters: any = {
@@ -18,7 +19,7 @@ const getSorter = (sortParam: string, sortOrder: number) => {
 const Quotes = () => {
   const [sortParam, setSortParam] = useState('symbol');
   const [sortOrder, setSortOrder] = useState(1);
-  const quotes = useSelector((state) => state.quotes);
+  const quotes = useSelector((state) => state.quotes.quotes);
   const dispatch = useDispatch();
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     
@@ -47,8 +48,7 @@ const Quotes = () => {
     //   }
     // }
     // getQuotes();
-    dispatch(loadPortfolio());
-
+    dispatch(FETCH_QUOTES());
   }, [dispatch]);
 
   return (
