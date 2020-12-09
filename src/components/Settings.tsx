@@ -11,7 +11,7 @@ import { ADD_PORTFOLIO_INSTRUMENT } from '../store/portfolio/actions/addPortfoli
 
 const Settings = () => {
   const [showModal, setShowModal] = useState(false);
-  const [modalInput, setModalInput] = useState({ symbol: '', value: 0 });
+  const [modalInput, setModalInput] = useState({ symbol: '', value: '' });
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.portfolio.list);
   const loading = useSelector((state) => state.portfolio.loading);
@@ -22,21 +22,6 @@ const Settings = () => {
     setShowModal(false);
   }
   const addInstrument = () => {
-    // try {
-    //   const authData: Iauth | null = getContext();
-    //   if (!authData) {
-    //     throw new Error('User undefined!');
-    //   }
-    //   await axios.post(`/portfolio/add`, { username: authData.username, ...modalInput }, { 
-    //     auth: authData,
-    //     baseURL: config.baseURL,
-    //   });
-    //   setModalInput({ symbol: '', value: '' });
-    //   // dispatch(REQUEST_PORTFOLIO()); //должно работать через сагу
-    // } catch (e) {
-    //   alert(e.message);
-    //   console.log('Error while adding new instrument: ', e);
-    // }
     dispatch(ADD_PORTFOLIO_INSTRUMENT(modalInput));
     setShowModal(false);
   }

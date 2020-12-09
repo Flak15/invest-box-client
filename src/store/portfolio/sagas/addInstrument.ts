@@ -31,14 +31,16 @@ const addInstrument = ({ symbol, value }: IaddInstrument) => {
   });
 }
 
-function* workerAddPortfolioInstrument (args: IaddInstrument) {
+function* workerAddPortfolioInstrument ({ payload }: any) {
+  console.log(payload);
   try {
     // yield put(ADD_PORTFOLIO_INSTRUMENT_QUERY());
-    yield call(addInstrument, args);
+    yield call(addInstrument, payload);
     const res = yield call(getPortfolio);
     yield put(FETCH_PORTFOLIO());
-    yield put(FETCH_PORTFOLIO_SUCCESS(JSON.parse(res.data.p)));
+    yield put(FETCH_PORTFOLIO_SUCCESS(JSON.parse(res.data.p))); // возвращает без нового инструмента
   } catch (error) {
+    
     yield put(FETCH_PORTFOLIO_FAIL());
   };
 }
