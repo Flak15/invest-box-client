@@ -1,8 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 
-const changeInstrumentValue = createAction('CHANGE_INSTRUMENT_VALUE', (id: string, value: number) => {
+export const UPDATE_INSTRUMENT_VALUE = createAction('UPDATE_INSTRUMENT_VALUE', (symbol: string, value: number) => {
   return {
-    payload: { id, value }
+    payload: { symbol, value }
   }
 });
-export default changeInstrumentValue;
+export const UPDATE_INSTRUMENT_VALUE_SUCCESS = createAction('UPDATE_INSTRUMENT_VALUE_SUCCESS');
+export const UPDATE_INSTRUMENT_VALUE_FAIL = createAction<Error>('UPDATE_INSTRUMENT_VALUE_FAIL');

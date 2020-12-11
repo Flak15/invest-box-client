@@ -1,12 +1,15 @@
-import { createStore, applyMiddleware, Store, combineReducers, compose } from 'redux';
+import { createStore, applyMiddleware, Store, combineReducers } from 'redux';
 // import reducers from './reducers/index';
 import createSagaMiddleware from 'redux-saga';
-import { all } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 import portfolio from './portfolio/reducers/portfolio';
 import quotes from './quotes/reducers/quotesReducer';
 import { watchFetchQuotes } from './quotes/sagas/saga';
-import { watchFetchPortfolio } from './portfolio/sagas/requestPortfolio';
+import { watchFetchPortfolio, watchUpdatePortfolio } from './portfolio/sagas/requestPortfolio';
 import { watchAddPortfolioInstrument } from './portfolio/sagas/addInstrument';
+import { watchUpdateInstrumentValue } from './portfolio/sagas/updateInstrumentValue';
+import { watchRemoveInstrument } from './portfolio/sagas/removeInstrument';
+import { composeWithDevTools } from 'redux-devtools-extension';
 export type State = ReturnType<typeof reducers>;
 
 declare module "react-redux" {
@@ -19,12 +22,18 @@ const reducers = combineReducers({
 });
 
 const sagaMiddleware = createSagaMiddleware();
-const store: Store = createStore(reducers, compose(
+const store: Store = createStore(reducers, composeWithDevTools(
   applyMiddleware(sagaMiddleware),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ));
 function* rootSaga () {
-  yield all([watchFetchQuotes(), watchFetchPortfolio(), watchAddPortfolioInstrument()]);
+  yield all([
+    fork(watchFetchQuotes), 
+    fork(watchFetchPortfolio), 
+    fork(watchAddPortfolioInstrument), 
+    fork(watchUpdateInstrumentValue),
+    fork(watchRemoveInstrument),
+    fork(watchUpdatePortfolio),
+  ]); // fork
 }
 sagaMiddleware.run(rootSaga);
 export default store;

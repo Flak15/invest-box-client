@@ -1,28 +1,26 @@
 import React, { ChangeEvent } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
-import { IportfolioItem } from '../types/index';
-import { useDispatch } from 'react-redux';
-import changeInstrumentValueAction from 'src/store/portfolio/actions/updateValue';
 
 interface IinstrumentFormComponent {
-  instrument: IportfolioItem,
-  handleSubmit: () => Promise<void>
+  value: number,
+  handleSubmit: () => Promise<void>,
+  handleChange: (value: number) => void
 }
 
-const InstrumentForm = ({ instrument, handleSubmit }: IinstrumentFormComponent) => {
-  const dispatch = useDispatch();  
+const InstrumentForm = ({ value, handleSubmit, handleChange }: IinstrumentFormComponent) => {
+  
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeInstrumentValueAction(instrument._id, Number(e.target.value)));
+    handleChange(Number(e.currentTarget.value));
   }
-  return (<Form onSubmit={handleSubmit}>
+  return (<Form>
     <Form.Row>
       <Col>
         <Form.Group controlId="formValue">
-          <Form.Control type="text" value={instrument.value} onChange={handleInput}/>
+          <Form.Control type="text" value={value} onChange={handleInput} />
         </Form.Group>
       </Col>
       <Col>
-        <Button variant="outline-secondary" type="submit">
+        <Button variant="outline-secondary" type="button" onClick={handleSubmit}>
           OK
         </Button>
       </Col>

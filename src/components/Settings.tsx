@@ -1,11 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import config from '../config';
-import { getContext } from '../storage';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
-import { Iauth, IportfolioItem } from '../types/index';
+import { IportfolioItem } from '../types/index';
 import { REQUEST_PORTFOLIO } from '../store/portfolio/actions/requestPortfolio';
 import { ADD_PORTFOLIO_INSTRUMENT } from '../store/portfolio/actions/addPortfolioInstrument';
 

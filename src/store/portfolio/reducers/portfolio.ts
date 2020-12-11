@@ -25,15 +25,10 @@ const portfolio = createReducer(portfolioInitialState, (builder) => {
       .addCase(FETCH_PORTFOLIO_SUCCESS, (_, action) => {
         return { list: action.payload, loading: false, errors: false };
       })
-      .addCase(FETCH_PORTFOLIO_FAIL, (state, _) => {
+      .addCase(FETCH_PORTFOLIO_FAIL, (state, action) => {
+        console.log(action.payload.message);
         return { list: state.list, loading: false, errors: true };
       })
-      // .addCase(addPortfolioInstrument, (state, action) => {
-      //   return [...state, action.payload];
-      // })
-      // .addCase(setPortfolio, (_, action) => {
-      //   return action.payload;
-      // })
       // .addCase(changeInstumentValue, (state, action) => {
       //   const editableInstrument = state.find(item => item._id === action.payload.id);
       //   if (editableInstrument)
