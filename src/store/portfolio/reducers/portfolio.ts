@@ -1,7 +1,4 @@
 import { createReducer } from '@reduxjs/toolkit';
-// import addPortfolioInstrument from '../actions/addPortfolioInstrument';
-// import setPortfolio from '../actions/setPortfolio';
-// import changeInstumentValue from '../actions/changeInstrumentValue';
 import { FETCH_PORTFOLIO, FETCH_PORTFOLIO_SUCCESS, FETCH_PORTFOLIO_FAIL } from '../actions/requestPortfolio';
 import { IportfolioItem } from '../../../types/index';
 
