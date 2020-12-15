@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../../../config';
 import { getContext } from '../../../storage';
 import { Iauth } from '../../../types/index';
-import { REMOVE_INSTRUMENT, REMOVE_INSTRUMENT_FAIL, REMOVE_INSTRUMENT_SUCCESS } from '../actions/removeInstrument';
+import { removeInstrument, removeInstrumentFail, removeInstrumentSuccess } from '../actions/removeInstrument';
 
 // interface IremoveInstrument {
 //   symbol: string,
@@ -29,12 +29,12 @@ interface removePayload {
 function* workerRemoveInstrument({ payload }: removePayload) {
   try {
     yield call(updateInstrument, payload);
-    yield put(REMOVE_INSTRUMENT_SUCCESS());
+    yield put(removeInstrumentSuccess());
   } catch (error) {
-    yield put(REMOVE_INSTRUMENT_FAIL(error));
+    yield put(removeInstrumentFail(error));
   };
 }
 
 export function* watchRemoveInstrument() {
-  yield takeLatest(REMOVE_INSTRUMENT, workerRemoveInstrument);
+  yield takeLatest(removeInstrument, workerRemoveInstrument);
 }

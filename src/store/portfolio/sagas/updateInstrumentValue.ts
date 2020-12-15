@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../../../config';
 import { getContext } from '../../../storage';
 import { Iauth } from '../../../types/index';
-import { UPDATE_INSTRUMENT_VALUE, UPDATE_INSTRUMENT_VALUE_FAIL, UPDATE_INSTRUMENT_VALUE_SUCCESS } from '../actions/updateValue';
+import { updateInstrumentValue, updateInstrumentValueFail, updateInstrumentValueSuccess } from '../actions/updateValue';
 
 interface IupdatedInstrument {
   symbol: string,
@@ -31,12 +31,12 @@ interface updatePayload {
 function* workerUpdateInstrumentValue ({ payload }: updatePayload) {
   try {
     yield call(updateInstrument, payload);
-    yield put(UPDATE_INSTRUMENT_VALUE_SUCCESS());
+    yield put(updateInstrumentValueSuccess());
   } catch (error) {
-    yield put(UPDATE_INSTRUMENT_VALUE_FAIL(error));
+    yield put(updateInstrumentValueFail(error));
   };
 }
 
 export function* watchUpdateInstrumentValue () {
-  yield takeLatest(UPDATE_INSTRUMENT_VALUE, workerUpdateInstrumentValue);
+  yield takeLatest(updateInstrumentValue, workerUpdateInstrumentValue);
 }

@@ -3,10 +3,10 @@ import axios from 'axios';
 import config from '../../../config';
 import { getContext } from '../../../storage';
 import { Iauth } from '../../../types/index';
-import { FETCH_PORTFOLIO, FETCH_PORTFOLIO_SUCCESS, FETCH_PORTFOLIO_FAIL, REQUEST_PORTFOLIO } from '../actions/requestPortfolio';
-import { ADD_PORTFOLIO_INSTRUMENT_SUCCESS } from '../actions/addPortfolioInstrument';
-import { UPDATE_INSTRUMENT_VALUE_SUCCESS } from '../actions/updateValue';
-import { REMOVE_INSTRUMENT_SUCCESS } from '../actions/removeInstrument';
+import { fetchPortfolio, fetchPortfolioSuccess, fetchPortfolioFail, requestPortfolio } from '../actions/requestPortfolio';
+import { addPortfolioInstrumentSuccess } from '../actions/addPortfolioInstrument';
+import { updateInstrumentValueSuccess } from '../actions/updateValue';
+import { removeInstrumentSuccess } from '../actions/removeInstrument';
 const getPortfolio = () => {
   const authData: Iauth | null = getContext();
   if (!authData) {
@@ -19,30 +19,30 @@ const getPortfolio = () => {
 }
 function* workerFetchPortfolio() {
   try {
-    yield put(FETCH_PORTFOLIO());
+    yield put(fetchPortfolio());
     const res = yield call(getPortfolio);
-    yield put(FETCH_PORTFOLIO_SUCCESS(JSON.parse(res.data.p)));
+    yield put(fetchPortfolioSuccess(JSON.parse(res.data.p)));
   } catch (error) {
-    yield put(FETCH_PORTFOLIO_FAIL(error));
+    yield put(fetchPortfolioFail(error));
   };
 }
 
 export function* watchUpdatePortfolio() {
   while (true) {
-    yield take([ADD_PORTFOLIO_INSTRUMENT_SUCCESS, UPDATE_INSTRUMENT_VALUE_SUCCESS, REMOVE_INSTRUMENT_SUCCESS]);
+    yield take([addPortfolioInstrumentSuccess, updateInstrumentValueSuccess, removeInstrumentSuccess]);
     /**
      * After that success action portfolio will updated
      */
     try {
-      yield put(FETCH_PORTFOLIO());
+      yield put(fetchPortfolio());
       const res = yield call(getPortfolio);
-      yield put(FETCH_PORTFOLIO_SUCCESS(JSON.parse(res.data.p)));
+      yield put(fetchPortfolioSuccess(JSON.parse(res.data.p)));
     } catch (error) {
-      yield put(FETCH_PORTFOLIO_FAIL(error));
+      yield put(fetchPortfolioFail(error));
     }
   }
  }
 
 export function* watchFetchPortfolio () {
-  yield takeLatest(REQUEST_PORTFOLIO, workerFetchPortfolio);
+  yield takeLatest(requestPortfolio, workerFetchPortfolio);
 }

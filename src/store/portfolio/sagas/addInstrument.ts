@@ -3,8 +3,7 @@ import axios from 'axios';
 import config from '../../../config';
 import { getContext } from '../../../storage';
 import { Iauth } from '../../../types/index';
-import { ADD_PORTFOLIO_INSTRUMENT, ADD_PORTFOLIO_INSTRUMENT_SUCCESS, ADD_PORTFOLIO_INSTRUMENT_FAIL } from '../actions/addPortfolioInstrument';
-// getInstrument = () => {}
+import { addPortfolioInstrument, addPortfolioInstrumentSuccess, addPortfolioInstrumentFail } from '../actions/addPortfolioInstrument';
 
 interface IaddInstrument {
   symbol: string,
@@ -24,15 +23,14 @@ const addInstrument = async ({ symbol, value }: IaddInstrument) => {
 
 function* workerAddPortfolioInstrument ({ payload }: any) {
   try {
-    // yield put(ADD_PORTFOLIO_INSTRUMENT_QUERY());
     yield call(addInstrument, payload);
-    yield put(ADD_PORTFOLIO_INSTRUMENT_SUCCESS());
+    yield put(addPortfolioInstrumentSuccess());
   } catch (error) {
     console.log(error);
-    yield put(ADD_PORTFOLIO_INSTRUMENT_FAIL(error));
+    yield put(addPortfolioInstrumentFail(error));
   };
 }
 
 export function* watchAddPortfolioInstrument () {
-  yield takeLatest(ADD_PORTFOLIO_INSTRUMENT, workerAddPortfolioInstrument);
+  yield takeLatest(addPortfolioInstrument, workerAddPortfolioInstrument);
 }

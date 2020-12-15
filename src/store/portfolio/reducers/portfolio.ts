@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FETCH_PORTFOLIO, FETCH_PORTFOLIO_SUCCESS, FETCH_PORTFOLIO_FAIL } from '../actions/requestPortfolio';
+import { fetchPortfolio, fetchPortfolioSuccess, fetchPortfolioFail } from '../actions/requestPortfolio';
 import { IportfolioItem } from '../../../types/index';
 
 interface IportfolioState {
@@ -16,13 +16,13 @@ const portfolioInitialState: IportfolioState = {
 
 const portfolio = createReducer(portfolioInitialState, (builder) => {
     builder
-      .addCase(FETCH_PORTFOLIO, (state, _) => {
+      .addCase(fetchPortfolio, (state, _) => {
         return { list: state.list, loading: true, errors: false };
       })
-      .addCase(FETCH_PORTFOLIO_SUCCESS, (_, action) => {
+      .addCase(fetchPortfolioSuccess, (_, action) => {
         return { list: action.payload, loading: false, errors: false };
       })
-      .addCase(FETCH_PORTFOLIO_FAIL, (state, action) => {
+      .addCase(fetchPortfolioFail, (state, action) => {
         console.log(action.payload.message);
         return { list: state.list, loading: false, errors: true };
       })

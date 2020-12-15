@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 
-export const REMOVE_INSTRUMENT = createAction<any>('UPDATE_INSTRUMENT_VALUE');
-export const REMOVE_INSTRUMENT_SUCCESS = createAction('UPDATE_INSTRUMENT_VALUE_SUCCESS');
-export const REMOVE_INSTRUMENT_FAIL = createAction<Error>('UPDATE_INSTRUMENT_VALUE_FAIL');
+export const removeInstrument = createAction<any>('REMOVE_INSTRUMENT');
+export const removeInstrumentSuccess = createAction('REMOVE_INSTRUMENT_SUCCESS');
+export const removeInstrumentFail = createAction<Error>('REMOVE_INSTRUMENT_FAIL');
