@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
 import { Iinstrument } from '../types/index';
 import { useSelector, useDispatch } from 'react-redux';
-import { FETCH_QUOTES } from 'src/store/quotes/actions/quotesActions';
+import { requestQuotes } from 'src/store/quotes/actions/quotesActions';
 
 const getSorter = (sortParam: string, sortOrder: number) => {
   const sorters: any = {
@@ -31,7 +31,7 @@ const Quotes = () => {
     }
   }
   useEffect(() => {
-    dispatch(FETCH_QUOTES());
+    dispatch(requestQuotes());
   }, [dispatch]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />

@@ -30,9 +30,6 @@ function* workerFetchPortfolio() {
 export function* watchUpdatePortfolio() {
   while (true) {
     yield take([addPortfolioInstrumentSuccess, updateInstrumentValueSuccess, removeInstrumentSuccess]);
-    /**
-     * After that success action portfolio will updated
-     */
     try {
       yield put(fetchPortfolio());
       const res = yield call(getPortfolio);

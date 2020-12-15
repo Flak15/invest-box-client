@@ -1,24 +1,26 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Container, Jumbotron, Form, Button } from 'react-bootstrap';
-import axios from 'axios';
-import config from '../config';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../store/user/actions/addUser';
 
 const Registration = () => {
   const history = useHistory();
   const [formInputs, setFormInputs] = useState({ username: '', password: '', code: '' });
+  const dispatch = useDispatch();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
   }
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await axios.post('/user', { ...formInputs }, { baseURL: config.baseURL });
-      history.push('/');
-    } catch (e) {
-      alert(e.message);
-      console.log('Registration error: ', e);
-    }
+    // try {
+    //   await axios.post('/user', { ...formInputs }, { baseURL: config.baseURL });
+    //   history.push('/');
+    // } catch (e) {
+    //   alert(e.message);
+    //   console.log('Registration error: ', e);
+    // }
+    dispatch(addUser(formInputs));
     setFormInputs({ username: '', password: '', code: '' });
   }
   return (

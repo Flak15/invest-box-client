@@ -8,7 +8,6 @@ interface IinstrumentFormComponent {
 }
 
 const InstrumentForm = ({ value, handleSubmit, handleChange }: IinstrumentFormComponent) => {
-  
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     handleChange(Number(e.currentTarget.value));
   }

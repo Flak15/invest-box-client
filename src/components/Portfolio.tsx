@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { IportfolioItem } from '../types/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { REQUEST_PORTFOLIO } from '../store/portfolio/actions/requestPortfolio';
+import { requestPortfolio } from '../store/portfolio/actions/requestPortfolio';
 
 const Portfolio = () => {
   const dispatch = useDispatch();
   const portfolio = useSelector((state) => state.portfolio.list);
   const loading = useSelector((state) => state.portfolio.loading);
   useEffect(() => {
-    dispatch(REQUEST_PORTFOLIO());
+    dispatch(requestPortfolio());
   }, [dispatch]);
 
   if (loading) {

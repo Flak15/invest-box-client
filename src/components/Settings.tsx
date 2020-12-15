@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Instrument from './Instrument';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { IportfolioItem } from '../types/index';
-import { REQUEST_PORTFOLIO } from '../store/portfolio/actions/requestPortfolio';
-import { ADD_PORTFOLIO_INSTRUMENT } from '../store/portfolio/actions/addPortfolioInstrument';
+import { requestPortfolio } from '../store/portfolio/actions/requestPortfolio';
+import { addPortfolioInstrument } from '../store/portfolio/actions/addPortfolioInstrument';
 
 const Settings = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +19,7 @@ const Settings = () => {
     setShowModal(false);
   }
   const addInstrument = () => {
-    dispatch(ADD_PORTFOLIO_INSTRUMENT(modalInput));
+    dispatch(addPortfolioInstrument(modalInput));
     setShowModal(false);
   }
   
@@ -28,7 +28,7 @@ const Settings = () => {
   }
 
   useEffect(() => {
-    dispatch(REQUEST_PORTFOLIO());
+    dispatch(requestPortfolio());
   }, [dispatch]);
   if (loading) {
     return <Spinner animation="border" variant="secondary" />
