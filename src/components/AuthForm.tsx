@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
-import axios from 'axios';
-import { setContext } from '../storage';
-import config from '../config';
+// import axios from 'axios';
+// import { setContext } from '../storage';
+// import config from '../config';
 import { Form, Button, Container, Jumbotron } from 'react-bootstrap';
 
 interface IauthFormComponent {
@@ -14,18 +14,19 @@ const AuthForm = ({ onLogin }: IauthFormComponent) => {
     setFormInputs({ ...formInputs, [e.target.name]: e.target.value });
   }
   const onSubmit = async () => {
-    try {
-      await axios.get('/', {
-          auth: formInputs,
-          baseURL: config.baseURL,
-        }
-      );
-      onLogin();
-      setContext(formInputs);
-    } catch (e) {
-      alert(e.message);
-      console.log('Login error: ', e);
-    }
+    // try {
+    //   await axios.get('/', {
+    //       auth: formInputs,
+    //       baseURL: config.baseURL,
+    //     }
+    //   );
+    //   
+    //   setContext(formInputs);
+    // } catch (e) {
+    //   alert(e.message);
+    //   console.log('Login error: ', e);
+    // }
+    onLogin();
     setFormInputs({ username: '', password: '' });
   }
   
