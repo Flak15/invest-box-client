@@ -1,17 +1,21 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { fetchQuotes, fetchQuotesSuccess, fetchQuotesFail } from '../actions/quotesActions';
-import { Iinstrument } from '../../../types/index';
+import { createReducer } from "@reduxjs/toolkit";
+import {
+  fetchQuotes,
+  fetchQuotesSuccess,
+  fetchQuotesFail,
+} from "../actions/quotesActions";
+import { Iinstrument } from "../../../types/index";
 
 interface IquotesState {
-  list: Iinstrument[],
-  loading: boolean,
-  errors: boolean
+  list: Iinstrument[];
+  loading: boolean;
+  errors: boolean;
 }
 
-const quotesInitialState: IquotesState = { 
+const quotesInitialState: IquotesState = {
   list: [],
   loading: false,
-  errors: false
+  errors: false,
 };
 
 const quotes = createReducer(quotesInitialState, (builder) => {
@@ -24,7 +28,7 @@ const quotes = createReducer(quotesInitialState, (builder) => {
     })
     .addCase(fetchQuotesFail, (state, _) => {
       return { list: state.list, loading: false, errors: true };
-    })
+    });
 });
 
 export default quotes;
